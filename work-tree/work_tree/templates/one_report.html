@@ -1,0 +1,46 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        
+        <table class="table">
+          <thead>
+              <tr >
+                 
+                  <th>report title</th>
+                  <th>report date</th>
+                  
+                  <th>image</th>
+                 
+              </tr>
+              
+          </thead>
+          <tbody>
+                  
+                  <tr >
+                    
+                    <td >{{one_report.title}}</td>
+                    <td >{{one_report.date}}</td>
+                   
+                    <td><img src="{{ one_report.image.url}}" style="height: 75px;" alt=""  ></td>
+                    
+                </tr>
+                  
+                  
+               
+                  
+                 
+                  
+          </tbody>
+      </table>
+      </div>
+    </div>
+</div>
+
+
+{% endblock content %}

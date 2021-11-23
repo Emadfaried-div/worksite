@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <form   class='site-form'    method="POST"   action= "{% url 'createnote' %} " enctype="multipart/form-data" >
+                {% csrf_token %}
+                {{form|crispy }}<hr>
+                <button type="submit" class="btn btn-lg btn-primary" value='create'>Submit your note</button>
+            </form>
+        </div>
+    </div>
+</div><hr><br>
+{% endblock content %}
+

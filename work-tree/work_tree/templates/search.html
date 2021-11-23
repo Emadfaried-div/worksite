@@ -1,0 +1,98 @@
+
+
+
+
+
+
+
+{% extends "base.html" %}
+
+{% load static %}
+
+
+{% block titel %} search {% endblock %}
+
+
+
+
+{% block content %}
+<div class="container">
+    
+ 
+
+
+<section class="text-center mb-4">
+    <hr class="">
+    <div class="container">
+        <div class="raw">
+            <div class="col-md-12">
+    <h3 class="text">search results for  <span class="text-info">"{{request.GET.keyword}}"</span></h3>
+            </div>
+        </div>  
+    </div>
+    <hr class="">
+    <div class="row wow fadeIn">
+
+
+
+
+      
+        {% for result in results %}
+      <div class="col-lg-3 col-md-6 mb-4 card ">
+
+        <div class="card border-0">
+
+          <div class="view overlay">
+            {% comment %} <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg" class="card-img-top" {% endcomment %}
+           
+            <a href="{% url 'onepo' result.id %}"></a>
+              <div class="mask rgba-white-slight"></div>
+              <img src="{{result.image.url}}" class="img-fluid" style="height: 250px;object-fit:contain; " >
+            </a>
+          </div>
+
+          <div class="card-body text-center">
+            
+              
+            
+            <h5>
+              <strong>
+                <a href="{% url 'onepo' result.id  %}" class="dark-grey-text">{{ result.title}}<hr>
+                    
+                   
+                 
+                </a>
+                 <a href="{% url 'oneoffer' result.offer.id  %}"><h3>offer_Id:{{ result.offer.id}}</h3></a>
+                 <h6>offer_price= &nbsp({{ result.offer.totalprice}}EGP</h6>
+              </strong>
+              <p class="">{{ result.description|truncatechars:30}}</p>
+            </h5>
+            
+
+             <h4 class="font-weight-bold blue-text">
+                <h6 class="lead">
+                    {{ result.vendor}}
+                </h6>
+                <h6 class="lead">
+                    {{ result.date}}
+                </h6>
+                
+                
+                </strong>
+              </h4>
+
+          </div>
+
+        </div>
+
+      </div>
+      {% endfor %}
+    </div>
+
+  </section>
+  <!--Section: Products v.3-->
+
+  <!--Pagination-->
+
+  
+  {% endblock content %}

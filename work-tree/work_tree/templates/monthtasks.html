@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+
+
+
+  
+{% block content %}
+<h5 class="text-center" style='color:red'>( Current Month tasks)</h5>
+<a href="{% url 'month_task_create' %}"  class=" text-center"  style='text-decoration:none;'><button type="submit" class="btn btn-lg btn-primary" value='create ' style='float:right'>Create a new task</button></a>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+             {% for data in dataset %}
+ 
+             ({{forloop.counter}}):&nbsp {{ data.monthtitle }}
+             <p class="">{{ data.task }}</p>
+    <hr/>
+ 
+    {% endfor %}
+    
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+

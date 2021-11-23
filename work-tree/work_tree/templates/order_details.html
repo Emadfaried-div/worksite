@@ -1,0 +1,51 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        
+        <table class="table">
+          <thead>
+              <tr >
+                 
+                  <th>Order Title</th>
+                  <th>Order Description</th>
+                  <th>Quantity</th>
+                  <th>Created_at</th>
+                  <th>image</th>
+                 
+              </tr>
+              
+          </thead>
+          <tbody>
+                  
+                  <tr >
+                    
+                    <td >{{one_order.title}}</td>
+                    <td >{{one_order.description}}</td>
+                    <td >{{one_order.quantity}}</td>
+                    <td>{{one_order.date}}</td>
+                    <td><img src="{{ one_order.image.url}}" style="height: 75px;" alt=""  ></td>
+                    
+                </tr>
+                  
+                  
+               
+                  
+                 
+                  
+          </tbody>
+      </table>
+      </div>
+
+     
+    </div>
+</div>
+
+
+
+{% endblock content %}

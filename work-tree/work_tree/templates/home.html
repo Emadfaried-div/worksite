@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+<head>
+    {% include "header" %}
+</head>
+<body>
+    {% block content %}
+    <div class="container">
+        <div class="row">
+            <h2 class='text-center'>Work Tree </h2>
+            <hr>
+            <h6  class='text-center'>Welcome "{{user.username}}" </h6>
+           
+            
+            
+                <a href="{% url 'daily_notes' %}" class=" page-link   text-center"  style='text-decoration:none;'><button type="submit" class="btn btn-success">Go to daily notes</button></a>
+                <a href="{% url 'monthtasks' %}" class=" page-link   text-center"  style='text-decoration:none;'><button type="submit" class="btn btn-success">Go to current month Tasks</button></a>
+            
+     
+    
+    <div class="col md 6    page-link  text-center" >
+        
+       
+        <a href="{% url 'orders' %}" class=""  style='text-decoration:none;'><img src="{% static 'img/ordry.png' %}" alt="" class=""></a>
+ </div> 
+ <div class="col md 6    page-link  text-center">
+    <a href="{% url 'po' %}" class=""  style='text-decoration:none;'><img src="{% static 'img/poy.png' %}" alt="" class=""></a>
+    
+   
+</div><hr>
+<div class="col-md-6  page-link  text-center">
+    <a href="{% url 'monthly_report' %}" class=""><img src="{% static 'img/montly_report.png' %}" alt="" class=""></a>
+    
+</div>
+<div class="col-md-6  page-link  text-center ">
+    
+    <a href="{% url 'offer' %}" class=""  style='text-decoration:none;'><img src="{% static 'img/offers.png' %}" alt="" class=""></a>
+</div><hr>
+
+      
+      
+        </div>
+    </div>
+      
+    {% endblock content %}
+</body>
+{% include "footer" %}
+</html>
+ </div>

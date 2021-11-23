@@ -1,0 +1,53 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+      <h2 class='text-center'>PO details</h2><hr>
+      <div class="col-md-12">
+          {{one_order.view_count}}
+          <table class="table">
+            <thead>
+                <tr class='text-center'>
+                   
+                    <th> Title</th>
+                    <th>Description</th>
+                    <th>Market </th>
+                    <th>count-of-offers </th>
+                    <th>Vendor</th>
+                    <th>image</th>
+                   
+                </tr>                                                       
+                
+            </thead>
+            <tbody>
+                    
+                    <tr class='text-center'>
+                      
+                      <td >{{one_po.title}}</td>
+                      <td >{{one_po.description}}</td>
+                      <td >{{one_po.market}}</td>
+                      <td >{{one_po.numbers_of_offers}}</td>
+                      <td >{{one_po.vendor}}</td>
+                      
+                      <td><img src="{{ one_po.image.url}}" style="height: 75px;" alt=""  ></td>
+                      
+                  </tr>
+                    
+                    
+                 
+                    
+                   
+                    
+            </tbody>
+        </table>
+      
+      </div>
+    </div>
+</div>
+
+
+{% endblock content %}

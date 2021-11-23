@@ -1,0 +1,62 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        
+        <table class="table">
+          <thead>
+              <tr >
+                 
+                  <th>offer Title</th>
+                  <th>offer vendor</th>
+                  <th>Market Area</th>
+                  <th>Quantity</th>
+                  <th>total price(EGP)</th>
+                  <th>offer1_image</th>
+                  <th>offer2_image</th>
+                  <th>part image</th>
+                  
+                 
+              </tr>
+              
+          </thead>
+          <tbody>
+                  
+                  <tr >
+                    
+                    <td >{{oneoffer.title}}</td>
+                    <td >{{oneoffer.vendor}}</td>
+                    <td >{{oneoffer.market}}</td>
+                    <td >{{oneoffer.quantity}}</td>
+                    <td >{{oneoffer.totalprice}}(EGP)</td>
+                    <td><img src="{{ oneoffer.image.url}}" style="height: 75px;" alt=""  ></td>
+                   
+                    {% if oneoffer.offer2_image2 %}<td><img src="{{ oneoffer.offer2_image2.url}}" style="height: 75px;" alt=""  ></td>{% endif %}
+                    
+                   {% if oneoffer.image_of_offer %}<td><img src="{{ oneoffer.image_of_offer.url}}" style="height: 75px;" alt=""  ></td>{% endif %}
+                  
+                   
+                    
+                </tr>
+                  
+                  
+               
+                  
+                 
+                  
+          </tbody>
+      </table>
+      </div>
+
+     
+    </div>
+</div>
+
+
+
+{% endblock content %}

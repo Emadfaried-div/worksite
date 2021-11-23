@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class=" text-center"  style='text-decoration:none;'>Daily Notes</h3>
+            <a href="{% url 'createnote' %}"  class=" text-center"  style='text-decoration:none;'><button type="submit" class="btn btn-lg btn-primary" value='create ' style='float:right'>Create a new task</button></a>
+            <table class="table" >
+                <thead>
+                    <tr  class=" text-center">
+                        <th>SN:</th>
+                        <th >Description</th>
+                        <th >responsible</th>
+                        <th >Area</th>
+                        <th>Vendor</th>
+                        <th>created Date</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th style='color:red'>Delete</th>
+                        <th>Edit</th>
+                        
+                       
+                        
+                        
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in daily_notes %}
+                     
+               
+                   <tr class=" text-center">
+                        <td>{{forloop.counter}}</td>
+                        {% if c.status == "DONE" %}
+                        <td > <del>{{c.description}}</del></td>
+                        {% else  %}
+                        <td>{{c.description}}</td>
+                        {% endif %}
+                        <td>{{c.responsible}}</td>
+                        <td>{{c.area}}</td>
+                        <td>{{c.vendor}}</td>
+                        <td>{{c.created_at}}</td>
+                        <td>{{c.due_date}}</td>
+                        {% if c.status == "DONE" %}
+                        <td style="color:red;">{{c.status}}</td>
+                        {% else  %}
+                        <td>{{c.status}}</td>
+                        {% endif %}
+                        <td> <a href="{% url 'delete' c.id %}" class="">{{c.delete_obj}}</a></td>
+                        <td> <a href="{% url 'update' c.id %}" class="">{{c.update_obj}}</a></td>
+                    
+                   </tr>
+                  
+                   
+                    {% endfor %}
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
