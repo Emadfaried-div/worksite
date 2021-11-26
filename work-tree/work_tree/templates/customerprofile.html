@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="container" style="background-color:#F0E68C" >
+    <div class="row">
+        <div class="col-md-4"><h3>My Informations</h3> <hr>
+            <p><span style="font-size:larger;color:brown">Name: </span>{{ customer.full_name}}</p>
+            <p><span style="font-size:larger;color:brown">Username: </span>{{customer.user.username }}</p>
+            <p><span style="font-size:larger;color:brown">Email: </span>{{ customer.user.email}}</p>
+            <p><span style="font-size:larger;color:brown">Address: </span>{{ customer.address}}</p>
+            <p><span style="font-size:larger;color:brown">Joined on: </span>{{ customer.joined_on}}</p>
+        </div>
+        <div class="col-md-8">
+            <h3>Previous Orders</h3><hr>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>SN.</th>
+                        <th>title.</th>
+                        <th>date.</th>
+                        <th>user</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                        {% for order in orders %}
+                       
+                       
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{order.title}}</td>
+                            <td>{{order.date}} ago</td>
+                            <td>{{order.user}}</td>
+                           
+                        </tr>
+                        {% endfor %}
+                       
+                </tbody>
+            </table>
+
+        </div>
+        
+    </div>
+</div>
+
+{% endblock %}

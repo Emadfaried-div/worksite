@@ -10,105 +10,244 @@ from . models import *
 from multiprocessing import context
 from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
-from django.contrib.auth import login, logout
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 
-# Create your views here.
+from django.views.generic import ListView, TemplateView , DetailView , View, CreateView, FormView
+#from ecomapp.utils import password_reset_token
+from django.db.models import Sum
+from django.urls import reverse_lazy
+from datetime import datetime
+from django.utils.crypto import get_random_string
+from django.core.paginator import Paginator
+from django.core.mail import send_mail
+from django.conf import settings
+from django.views.generic import TemplateView
+TemplateView.as_view(extra_context={'order': 'order'})
+from .utils import password_reset_token
+
+class EcomMixin(object):
+    def dispatch(self, request, *args, **kwargs):
+        cart_id=request.session.get("cart_id")
+        if cart_id:
+            cart_obj=TheOrder.objects.get(id=cart_id)
+            if request.user.is_authenticated and request.user.customer:
+                cart_obj.customer= request.user.customer
+                cart_obj.save()
+        return super().dispatch(request, *args, **kwargs)
+    
+
+
+
+
+
+###def home(request):
+   ###  order=TheOrder.objects.all()
+    ### context={
+         ### 'order':order,
+    ### }
+    ### return render(request,'home.html',context)
+    
+class HomeView(EcomMixin,TemplateView):
+    paginate_by= 12
+    model=TheOrder
+    
+    template_name = "home.html"
+    
+    
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        order=TheOrder.objects.all().order_by("-id")
+     #   paginator = Paginator(all_products, 12)
+     #   page_number = self.request.GET.get('page')
+     #   product_list = paginator.get_page(page_number)
+        context["order"]= order
+        return context
 
 
 
 
 
 
-def home(request):
-     order=TheOrder.objects.all()
-     context={
-          'order':order,
-     }
-     return render(request,'home.html',context)
+#def po(request):
+     #po=ThePo.objects.all().order_by("-id")     
+     #context={
+          #'po':po
+     #} 
+    # return render(request,'po.html',context)
 
+class AllPotView(EcomMixin, TemplateView):
+    template_name= "po.html"
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        context["po"]= ThePo.objects.all().order_by("id")
+        return context
 
-def po(request):
-     po=ThePo.objects.all().order_by("-id")     
-     context={
-          'po':po
-     } 
-     return render(request,'po.html',context)
-
-
-def po_details(request,id):
-     po=ThePo.objects.all()
-     one_po=ThePo.objects.get(id=id)
+#def po_details(request,id):
+     #po=ThePo.objects.all()
+     #one_po=ThePo.objects.get(id=id)
      
-     context ={
-          "one_po":one_po,
-      }
-     return render(request,"po_details.html",context)
+     #context ={
+         # "one_po":one_po,
+     # }
+    # return render(request,"po_details.html",context)
+class PoDetailView(EcomMixin, TemplateView):
+    template_name= "po_details.html"     
+    def get_context_data(self, **kwargs):
+        context= super().get_context_data(**kwargs)
+        url_slug = self.kwargs["slug"]
+        one_po = ThePo.objects.get(slug=url_slug)
+        one_po.view_count+=1
+        one_po.save()
+        context["one_po"] = one_po
+        return context
+
+#def monthly_report(request):
+     #report=MonthlyReport.objects.all()
+     #context={
+         # 'report':report
+     #}
+    # return render(request,'monthly_report.html',context)
+
+class AllMonthlytView(EcomMixin, TemplateView):
+    template_name= "monthly_report.html"
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        context["report"]= MonthlyReport.objects.all().order_by("id")
+        return context
 
 
-def monthly_report(request):
-     report=MonthlyReport.objects.all()
-     context={
-          'report':report
-     }
-     return render(request,'monthly_report.html',context)
-
-
-def one_report(request,id):
-     one_report=MonthlyReport.objects.get(id=id)
+#def one_report(request,id):
+    #one_report=MonthlyReport.objects.get(id=id)
      
-     context ={
-          "one_report":one_report,
-          }
+     #context ={
+         # "one_report":one_report,
+         # }
      
-     return render(request,"one_report.html",context)
+    # return render(request,"one_report.html",context)
 
 
-def report_create(request):
-     if request.method == "POST":
+class ReportDetailView(EcomMixin, TemplateView):
+    template_name= "one_report.html"     
+    def get_context_data(self, **kwargs):
+        context= super().get_context_data(**kwargs)
+        url_slug = self.kwargs["slug"]
+        one_report = MonthlyReport.objects.get(slug=url_slug)
+        one_report.view_count+=1
+        one_report.save()
+        context["one_report"] = one_report
+        return context
+
+
+#def report_create(request):
+     #if request.method == "POST":
+         # form= forms.MonthlyReportForm(request.POST,request.FILES)
+          #print (" have got a request")
+          #if form.is_valid():
+             #  instance =form.save(commit=False)  
+              # instance.author=request.user
+              # instance.save()
+              ## form.save()
+              # print (form.cleaned_data,"5555555555555")   
+         # return redirect('monthly_report')     
+               
+     #else:
+         #form = forms.MonthlyReportForm()
+     #return render(request,'create.html',{'form':form})
+
+class ReportCreateView(EcomMixin, CreateView):
+    template_name="create.html"
+    form_class= forms.MonthlyReportForm
+    success_url=reverse_lazy("monthly_report")
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.customer:
+            pass
+        else:
+           return redirect("login")
+
+        return super().dispatch(request, *args, **kwargs)
+        if request.method == "POST":
           form= forms.MonthlyReportForm(request.POST,request.FILES)
           print (" have got a request")
           if form.is_valid():
                instance =form.save(commit=False)  
                instance.author=request.user
-               instance.save()
+              #instance.save()
                form.save()
                print (form.cleaned_data,"5555555555555")   
           return redirect('monthly_report')     
                
-     else:
+        else:
          form = forms.MonthlyReportForm()
-     return render(request,'create.html',{'form':form})
+         return render(request,'create.html',{'form':form})
+       
 
-
-def daily_notes(request):
-     daily_notes=DailyNotes.objects.all()
-     context={
-          'daily_notes':daily_notes,
-     }
-     return render(request,'daily_notes.html',context)
+        
 
 
 
-def dailynotescreate(request):
-     if request.method == "POST":
-          form = forms.DialyNotesForm(request.POST,request.FILES)
-          print (" we have got  post ***************************************************")
-          if form.is_valid():
-             instance=form.save(commit=False)  
-             instance.author=request.user
-             instance.save()
-             print(form.cleaned_data,instance,"111111111111111111111111111111111111")
+#def daily_notes(request):
+    # daily_notes=DailyNotes.objects.all()
+     #context={
+          #'daily_notes':daily_notes,
+    # }
+    # return render(request,'daily_notes.html',context)
+
+class DailyNotesView(EcomMixin, TemplateView):
+    template_name= "daily_notes.html"
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        context["daily_notes"]= DailyNotes.objects.all().order_by("id")
+        return context
+
+#def dailynotescreate(request):
+    # if request.method == "POST":
+        #  form = forms.DialyNotesForm(request.POST,request.FILES)
+         # print (" we have got  post ***************************************************")
+         # if form.is_valid():
+            # instance=form.save(commit=False)  
+            # instance.author=request.user
+             #instance.save()
+             #print(form.cleaned_data,instance,"111111111111111111111111111111111111")
                
-          return redirect ('daily_notes')
+          #return redirect ('daily_notes')
            
-     else:
+    # else:
+         # form=forms.DialyNotesForm()
+          
+     #return render(request,"create_note.html",{'form':form})
+
+
+class DailyNotesCreateView(EcomMixin, CreateView):
+    template_name="create_note.html"
+    form_class= forms.DialyNotesForm
+    success_url=reverse_lazy("daily_notes")
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.customer:
+            pass
+        else:
+           return redirect("login")
+
+        return super().dispatch(request, *args, **kwargs)
+        if request.method == "POST":
+              form = forms.DialyNotesForm(request.POST,request.FILES)
+              print (" we have got  post ***************************************************")
+              if form.is_valid():
+                  instance=form.save(commit=False)  
+                  instance.author=request.user
+                  instance.save()
+                  print(form.cleaned_data,instance,"111111111111111111111111111111111111")
+               
+                  return redirect ('daily_notes')
+           
+        else:
           form=forms.DialyNotesForm()
           
-     return render(request,"create_note.html",{'form':form})
+        return render(request,"create_note.html",{'form':form})
 
 
+@login_required
 # delete view for details
 def delete_view(request, id):
     # dictionary for initial data with
@@ -128,7 +267,7 @@ def delete_view(request, id):
  
     return render(request, "delete_view.html", context)
      
-
+@login_required
 def update_view(request, id):
     # dictionary for initial data with
     # field names as keys
@@ -152,43 +291,73 @@ def update_view(request, id):
     return render(request, "update_view.html", context)
 
 
-def offer(request):
-     offer = TheOffer.objects.all().order_by("-id")
-     context = {
-          'offer':offer,
-     }
-     return render(request,'offers.html',context)
+#def offer(request):
+   #  offer = TheOffer.objects.all().order_by("-id")
+     #context = {
+    #      'offer':offer,
+    # }
+    # return render(request,'offers.html',context)
+class AllOfferstView(EcomMixin, TemplateView):
+    template_name= "offers.html"
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        context["offer"]= TheOffer.objects.all().order_by("id")
+        return context
 
 
-def oneoffer(request,id):
-     oneoffer = TheOffer.objects.get(id=id)
-     context = {
-          'oneoffer':oneoffer,
-     }
+#def oneoffer(request,id):
+     #oneoffer = TheOffer.objects.get(id=id)
+     #context = {
+          #'oneoffer':oneoffer,
+     #}
      
-     return render(request,'oneoffer.html',context)
+    #return render(request,'oneoffer.html',context)
+class OfferDetailView(EcomMixin, TemplateView):
+    template_name= "oneoffer.html"     
+    def get_context_data(self, **kwargs):
+        context= super().get_context_data(**kwargs)
+        url_slug = self.kwargs["slug"]
+        one_offer = TheOffer.objects.get(slug=url_slug)
+        one_offer.view_count+=1
+        one_offer.save()
+        context["one_offer"] =  one_offer
+        return context
 
-
-def orders(request):
-     order = TheOrder.objects.all().order_by("-id")
+#def orders(request):
+     #order = TheOrder.objects.all().order_by("-id")
     
-     context={
+     #context={
           
-          'order':order,
-     }
-     return render (request,'orders_po.html',context)        
+         # 'order':order,
+     #}
+    # return render (request,'orders_po.html',context)        
+class AllOrderstView(EcomMixin, TemplateView):
+    template_name= "orders_po.html"
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        context["order"]= TheOrder.objects.all().order_by("id")
+        return context
 
-
-def one_order(request,id):
-     order = TheOrder.objects.all()
-     one_order=TheOrder.objects.get(id=id)
+#def one_order(request,id):
+     #order = TheOrder.objects.all()
+     #one_order=TheOrder.objects.get(id=id)
      
-     context ={
-          "one_order":one_order,
-         }
+     #context ={
+         # "one_order":one_order,
+        # }
     
-     return render(request,"order_details.html",context)
+     #return render(request,"order_details.html",context)
 
+class OrderDetailView(EcomMixin, TemplateView):
+    template_name= "order_details.html"     
+    def get_context_data(self, **kwargs):
+        context= super().get_context_data(**kwargs)
+        url_slug = self.kwargs["slug"]
+        one_order = TheOrder.objects.get(slug=url_slug)
+        one_order.view_count+=1
+        one_order.save()
+        context["one_order"] =  one_order
+        return context
 
 
 class SearchView(TemplateView):
@@ -203,53 +372,81 @@ class SearchView(TemplateView):
         return context
    
 
-def signup (request):
-    if request.method == "POST":   
-        form = UserCreationForm(request.POST)
-        print("we have got a post request, 11111111111111111111111111111111111111")
-        if form.is_valid():
-            user=form.save( )
-            login(request,user)
-            
-            print (form.cleaned_data,"22222222222222")
-            
-            return redirect("login")
-        
-    else:
-        form =  UserCreationForm()
-    return render(request,'signup.html',{'form':form})
+class CustomerRegistrationView(CreateView):
+    template_name="customerregistration.html"
+    form_class = forms.CustomerRegistrationForm
+    success_url=reverse_lazy("home")
+
+    def form_valid(self, form):
+        username= form.cleaned_data.get("username")
+        password= form.cleaned_data.get('password')
+        email= form.cleaned_data.get("email")
+        user=User.objects.create_user(username,email,password) # for here only customer created not user, to create user follow step line202
+        form.instance.user= user
+        login(self.request, user)
+        return super().form_valid(form)
+    def get_success_url(self):
+        if "next" in self.request.GET:
+            next_url=self.request.GET.get("next") 
+            return next_url
+        else:
+            return self.success_url
 
 
 
-def login_view(request):
-    if request.method == "POST":
-        form = AuthenticationForm(data=request.POST)
-        print("we have login post")
-        if form.is_valid():
-            user=form.get_user()
+#def login_view(request):
+#    if request.method == "POST":
+        #form = AuthenticationForm(data=request.POST)
+       # print("we have login post")
+       # if form.is_valid():
+        #   user=form.get_user()
           
-            login(request, user)
+           # login(request, user)
           
             
-            print(form.cleaned_data,"login form successfully")
+          #  print(form.cleaned_data,"login form successfully")
            
-            return redirect('home')
-    else:
-        form = AuthenticationForm()
-        return render (request,'login.html',{'form':form})
+           # return redirect('home')
+    #else:
+      #  form = AuthenticationForm()
+       # return render (request,'login.html',{'form':form})
+
+
+class CustomerLoginView(FormView):
+    template_name="registration/login.html"
+    form_class = forms.CustomerloginForm
+    success_url=reverse_lazy("home") 
+
+    def form_valid(self, form):
+        uname=form.cleaned_data.get("username")
+        pword=form.cleaned_data["password"]
+        usr=authenticate(username=uname, password=pword)
+        if usr is not None and Customer.objects.filter(user=usr).exists():
+            login(self.request, usr)
+        else:
+            return render(self.request,self.template_name, {"form":self.form_class, "error":"Invaild Credentials"})
+
+        return super().form_valid(form) 
+
+    def get_success_url(self):
+        if "next" in self.request.GET:
+            next_url=self.request.GET.get("next") 
+            return next_url
+        else:
+            return self.success_url
+
+     
+
+
+
+class CustomerLogoutView(View):
+    def get(self,request):
+        logout(request)
+        return redirect("home")
 
 
 
 @login_required
-def logout_view(request):
-    if request.method=='POST':
-        logout(request)
-        return redirect('logged_out')
-    return render( request,'logged_out.html')
-
-
-
-
 def list_view(request):
     # dictionary for initial data with
     # field names as keys
@@ -260,7 +457,7 @@ def list_view(request):
          
     return render(request, "monthtasks.html", context)
 
-
+@login_required
 def monthtasksform(request):
      if request.method=='POST':
           form = forms.MonthTasksForm(request.POST,request.FILES)
@@ -274,5 +471,32 @@ def monthtasksform(request):
      return render (request,'month_task_create.html',{'form':form})  
 
 
+
+class CustomerProfileView(TemplateView):
+    template_name="customerprofile.html"
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and Customer.objects.filter(user=request.user).exists():
+            pass
+        else:
+           return redirect("/login/?next=/profile/")
+        return super().dispatch(request, *args, **kwargs)
+    def get_context_data(self, **kwargs):
+        context= super().get_context_data(**kwargs)
+        customer= self.request.user.customer
+        context["customer"]=customer
+        orders=TheOrder.objects.all() 
+        context["orders"]= orders
+        return context
+
+
+
+
 def about(request):
     return HttpResponse("<h1>About page<h1/>")    
+
+
+@login_required
+def send_message(request):
+    pass
+
+    return redirect(request,"home.html")

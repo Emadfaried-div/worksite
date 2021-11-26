@@ -14,9 +14,9 @@
       {% for p in po %}
       <div class="col-md-3">
           
-      <a href="{% url 'onepo' p.id %}"  class="page-link"><h4  class="dark-grey-text  " style= "color:red;">:&nbsp{{p.title}}</h4></a>
+      <a href="{% url 'onepo' p.slug %}"  class="page-link"><h4  class="dark-grey-text  " style= "color:red;">:&nbsp{{p.title}}</h4></a>
        
-     <a href="{% url 'onepo' p.id %}" class="page-link  "   ><img src="{{p.image.url}}" alt="" width="200"  style="height: 250px;object-fit:contain; "></a> 
+     <a href="{% url 'onepo' p.slug %}" class="page-link  "   ><img src="{{p.image.url}}" alt="" width="200"  style="height: 250px;object-fit:contain; "></a> 
      <h6>The Vendor:&nbsp{{p.vendor}}</h6>
       <h6>Market:&nbsp{{p.market}}</h6>
       <h6>Offer_Id:&nbsp{{p.offer.id}}</h6>

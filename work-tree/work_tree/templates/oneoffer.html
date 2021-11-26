@@ -29,16 +29,16 @@
                   
                   <tr >
                     
-                    <td >{{oneoffer.title}}</td>
-                    <td >{{oneoffer.vendor}}</td>
-                    <td >{{oneoffer.market}}</td>
-                    <td >{{oneoffer.quantity}}</td>
-                    <td >{{oneoffer.totalprice}}(EGP)</td>
-                    <td><img src="{{ oneoffer.image.url}}" style="height: 75px;" alt=""  ></td>
+                    <td >{{one_offer.title}}</td>
+                    <td >{{one_offer.vendor}}</td>
+                    <td >{{one_offer.market}}</td>
+                    <td >{{one_offer.quantity}}</td>
+                    <td >{{one_offer.totalprice}}(EGP)</td>
+                    <td><img src="{{ one_offer.image.url}}" style="height: 75px;" alt=""  ></td>
                    
-                    {% if oneoffer.offer2_image2 %}<td><img src="{{ oneoffer.offer2_image2.url}}" style="height: 75px;" alt=""  ></td>{% endif %}
+                    {% if one_offer.offer2_image2 %}<td><img src="{{ one_offer.offer2_image2.url}}" style="height: 75px;" alt=""  ></td>{% endif %}
                     
-                   {% if oneoffer.image_of_offer %}<td><img src="{{ oneoffer.image_of_offer.url}}" style="height: 75px;" alt=""  ></td>{% endif %}
+                   {% if one_offer.image_of_offer %}<td><img src="{{ one_offer.image_of_offer.url}}" style="height: 75px;" alt=""  ></td>{% endif %}
                   
                    
                     

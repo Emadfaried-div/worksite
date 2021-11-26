@@ -13,7 +13,7 @@
             
       {% for p in order %}
       <div class="col-md-3  ">
-          <div class="card border=0 "> <a href="{% url 'oneorder' p.id %}"  class="page-link"><h4  class="dark-grey-text  " style= "color:red;">&nbsp{{p.title}}</h4></a>
+          <div class="card border=0 "> <a href="{% url 'oneorder' p.slug %}"  class="page-link"><h4  class="dark-grey-text  " style= "color:red;">&nbsp{{p.title}}</h4></a>
             
                
             
