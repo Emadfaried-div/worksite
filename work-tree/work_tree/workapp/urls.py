@@ -40,4 +40,5 @@ urlpatterns = [
     path("register/",views.CustomerRegistrationView.as_view(),name="customerregistration"),
     path("login/",views.CustomerLoginView.as_view(), name="login"),
     path("logout/",views.CustomerLogoutView.as_view(), name="customerlogout"),
+    path("send/",views.send,name="send"),
 ]

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% load i18n %}
 
 {% block content %}
 <div class="container">
@@ -29,21 +29,21 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% if perms.workapp.can_view_daily_notes %}
+    <!-- We can mark a BookInstance as returned. -->
+    <!-- Perhaps add code to link to a "book return" view here. -->
+
                     {% for c in daily_notes %}
                      
                
                    <tr class=" text-center">
                         <td>{{forloop.counter}}</td>
-                        {% if c.status == "DONE" %}
-                        <td > <del>{{c.description}}</del></td>
-                        {% else  %}
-                        <td>{{c.description}}</td>
-                        {% endif %}
-                        <td>{{c.responsible}}</td>
+                        <td class="{% if c.is_overdue %}text-danger{% endif %}" > <del>{{c.description}}</del></td>
+                        <td class="{% if c.is_overdue %}text-danger{% endif %}">{{c.responsible}}</td>
                         <td>{{c.area}}</td>
-                        <td>{{c.vendor}}</td>
+                        <td class="{% if c.is_overdue %}text-danger{% endif %}">{{c.vendor}}</td>
                         <td>{{c.created_at}}</td>
-                        <td>{{c.due_date}}</td>
+                        <td class="{% if c.is_overdue %}text-danger{% endif %}">{{c.due_date}}</td>
                         {% if c.status == "DONE" %}
                         <td style="color:red;">{{c.status}}</td>
                         {% else  %}
@@ -56,6 +56,7 @@
                   
                    
                     {% endfor %}
+                    {% endif %}
                 </tbody>
 
             </table>

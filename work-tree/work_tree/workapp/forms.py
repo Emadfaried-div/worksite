@@ -65,10 +65,10 @@ class PasswordForgotForm(forms.Form):
 
     def clean_email(self):
         e = self.cleaned_data.get("email")
-        if Customer.objects.filter(user__email=e).exists():
+        if models.Customer.objects.filter(user__email=e).exists():
             pass
         else:
             raise forms.ValidationError("Customer with this Email does not exist...")
         return e 
 
-        
+

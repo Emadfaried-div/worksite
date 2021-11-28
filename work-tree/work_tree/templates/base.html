@@ -1,5 +1,5 @@
 {% load static  %}
-
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -44,7 +44,7 @@
                                                         </a>
                                                        
                                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                            {% if request.user.customer %}
+                                                            {% if request.user.customer  %}
                                                             <a class="dropdown-item"  href="{% url 'customerprofile' %} " >My profile</a>
                                                             <a href="/accounts/password_reset/" class="dropdown-item" >Change Password</a>
                                                             <a  class="dropdown-item"  href="{% url 'customerlogout' %} " >Logout</a>

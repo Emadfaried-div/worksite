@@ -8,7 +8,7 @@
 {% extends "base.html" %}
 
 {% load static %}
-
+{% load i18n %}
 
 {% block titel %} search {% endblock %}
 
@@ -45,7 +45,7 @@
           <div class="view overlay">
             {% comment %} <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg" class="card-img-top" {% endcomment %}
            
-            <a href="{% url 'onepo' result.id %}"></a>
+            <a href="{% url 'onepo' result.slug %}"></a>
               <div class="mask rgba-white-slight"></div>
               <img src="{{result.image.url}}" class="img-fluid" style="height: 250px;object-fit:contain; " >
             </a>
@@ -57,12 +57,12 @@
             
             <h5>
               <strong>
-                <a href="{% url 'onepo' result.id  %}" class="dark-grey-text">{{ result.title}}<hr>
+                <a href="{% url 'onepo' result.slug  %}" class="dark-grey-text">{{ result.title}}<hr>
                     
                    
                  
                 </a>
-                 <a href="{% url 'oneoffer' result.offer.id  %}"><h3>offer_Id:{{ result.offer.id}}</h3></a>
+                 <a href="{% url 'oneoffer' result.offer.slug  %}"><h3>offer_Id:{{ result.offer.id}}</h3></a>
                  <h6>offer_price= &nbsp({{ result.offer.totalprice}}EGP</h6>
               </strong>
               <p class="">{{ result.description|truncatechars:30}}</p>

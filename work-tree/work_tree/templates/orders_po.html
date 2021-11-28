@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% load i18n %}
 
 <head>
     {% block title %}  {% endblock %}
@@ -10,7 +10,7 @@
     <div class="container">
         <div class="row wow fadeIn">
             <h2 class='text-center'> Orders List</h2>
-            
+            {% if perms.workapp.can_view_the_order %}
       {% for p in order %}
       <div class="col-md-3  ">
           <div class="card border=0 "> <a href="{% url 'oneorder' p.slug %}"  class="page-link"><h4  class="dark-grey-text  " style= "color:red;">&nbsp{{p.title}}</h4></a>
@@ -18,7 +18,7 @@
                
             
            
-          <a href="{% url 'oneorder' p.id %}" class="page-link  "   ><img src="{{p.image.url}}" alt="" width="200"  style="height: 250px;object-fit:contain; "></a> 
+          <a href="{% url 'oneorder' p.slug %}" class="page-link  "   ><img src="{{p.image.url}}" alt="" width="200"  style="height: 250px;object-fit:contain; "></a> 
         </div>
         <h6>The vendor:&nbsp{{p.vendor}}</h6>
            <h6 class="">count_of_offers:&nbsp{{p.numbers_of_offers}}</h6>
@@ -38,6 +38,7 @@
       
       
       {% endfor %}
+      {% endif %}
         </div>
     </div>
       

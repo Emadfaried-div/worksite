@@ -12,7 +12,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.views.generic import ListView, TemplateView , DetailView , View, CreateView, FormView
 #from ecomapp.utils import password_reset_token
@@ -26,19 +26,14 @@ from django.conf import settings
 from django.views.generic import TemplateView
 TemplateView.as_view(extra_context={'order': 'order'})
 from .utils import password_reset_token
-
-class EcomMixin(object):
-    def dispatch(self, request, *args, **kwargs):
-        cart_id=request.session.get("cart_id")
-        if cart_id:
-            cart_obj=TheOrder.objects.get(id=cart_id)
-            if request.user.is_authenticated and request.user.customer:
-                cart_obj.customer= request.user.customer
-                cart_obj.save()
-        return super().dispatch(request, *args, **kwargs)
-    
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required, permission_required    
 
 
+from django.utils.translation import gettext as _
+from django.core.paginator import Paginator
+from idlelib import query
 
 
 
@@ -49,7 +44,7 @@ class EcomMixin(object):
     ### }
     ### return render(request,'home.html',context)
     
-class HomeView(EcomMixin,TemplateView):
+class HomeView(LoginRequiredMixin,TemplateView):
     paginate_by= 12
     model=TheOrder
     
@@ -77,7 +72,7 @@ class HomeView(EcomMixin,TemplateView):
      #} 
     # return render(request,'po.html',context)
 
-class AllPotView(EcomMixin, TemplateView):
+class AllPotView(LoginRequiredMixin, TemplateView):
     template_name= "po.html"
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
@@ -92,7 +87,7 @@ class AllPotView(EcomMixin, TemplateView):
          # "one_po":one_po,
      # }
     # return render(request,"po_details.html",context)
-class PoDetailView(EcomMixin, TemplateView):
+class PoDetailView(LoginRequiredMixin, TemplateView):
     template_name= "po_details.html"     
     def get_context_data(self, **kwargs):
         context= super().get_context_data(**kwargs)
@@ -110,7 +105,7 @@ class PoDetailView(EcomMixin, TemplateView):
      #}
     # return render(request,'monthly_report.html',context)
 
-class AllMonthlytView(EcomMixin, TemplateView):
+class AllMonthlytView(LoginRequiredMixin, TemplateView):
     template_name= "monthly_report.html"
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
@@ -128,7 +123,7 @@ class AllMonthlytView(EcomMixin, TemplateView):
     # return render(request,"one_report.html",context)
 
 
-class ReportDetailView(EcomMixin, TemplateView):
+class ReportDetailView(LoginRequiredMixin, TemplateView):
     template_name= "one_report.html"     
     def get_context_data(self, **kwargs):
         context= super().get_context_data(**kwargs)
@@ -156,7 +151,7 @@ class ReportDetailView(EcomMixin, TemplateView):
          #form = forms.MonthlyReportForm()
      #return render(request,'create.html',{'form':form})
 
-class ReportCreateView(EcomMixin, CreateView):
+class ReportCreateView(LoginRequiredMixin, CreateView):
     template_name="create.html"
     form_class= forms.MonthlyReportForm
     success_url=reverse_lazy("monthly_report")
@@ -193,8 +188,10 @@ class ReportCreateView(EcomMixin, CreateView):
           #'daily_notes':daily_notes,
     # }
     # return render(request,'daily_notes.html',context)
-
-class DailyNotesView(EcomMixin, TemplateView):
+class MyView( View):
+    permission_required = ('can_view_daily notes', 'can_delete_daily notes',"can_view_the_order")
+   
+class DailyNotesView(LoginRequiredMixin,TemplateView):
     template_name= "daily_notes.html"
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
@@ -219,7 +216,7 @@ class DailyNotesView(EcomMixin, TemplateView):
      #return render(request,"create_note.html",{'form':form})
 
 
-class DailyNotesCreateView(EcomMixin, CreateView):
+class DailyNotesCreateView(LoginRequiredMixin, CreateView):
     template_name="create_note.html"
     form_class= forms.DialyNotesForm
     success_url=reverse_lazy("daily_notes")
@@ -249,6 +246,7 @@ class DailyNotesCreateView(EcomMixin, CreateView):
 
 @login_required
 # delete view for details
+@permission_required('can_view_daily_notes', raise_exception=True)
 def delete_view(request, id):
     # dictionary for initial data with
     # field names as keys
@@ -297,7 +295,7 @@ def update_view(request, id):
     #      'offer':offer,
     # }
     # return render(request,'offers.html',context)
-class AllOfferstView(EcomMixin, TemplateView):
+class AllOfferstView(LoginRequiredMixin, TemplateView):
     template_name= "offers.html"
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
@@ -312,7 +310,7 @@ class AllOfferstView(EcomMixin, TemplateView):
      #}
      
     #return render(request,'oneoffer.html',context)
-class OfferDetailView(EcomMixin, TemplateView):
+class OfferDetailView(LoginRequiredMixin, TemplateView):
     template_name= "oneoffer.html"     
     def get_context_data(self, **kwargs):
         context= super().get_context_data(**kwargs)
@@ -331,7 +329,7 @@ class OfferDetailView(EcomMixin, TemplateView):
          # 'order':order,
      #}
     # return render (request,'orders_po.html',context)        
-class AllOrderstView(EcomMixin, TemplateView):
+class AllOrderstView(LoginRequiredMixin,TemplateView):
     template_name= "orders_po.html"
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
@@ -348,7 +346,7 @@ class AllOrderstView(EcomMixin, TemplateView):
     
      #return render(request,"order_details.html",context)
 
-class OrderDetailView(EcomMixin, TemplateView):
+class OrderDetailView(LoginRequiredMixin, TemplateView):
     template_name= "order_details.html"     
     def get_context_data(self, **kwargs):
         context= super().get_context_data(**kwargs)
@@ -447,6 +445,7 @@ class CustomerLogoutView(View):
 
 
 @login_required
+
 def list_view(request):
     # dictionary for initial data with
     # field names as keys
@@ -500,3 +499,8 @@ def send_message(request):
     pass
 
     return redirect(request,"home.html")
+
+
+def send(request):
+        send_mail("Hello","Hello there. this is automated message!","nemhfa@gmail.com",["efaried@icloud.com"],fail_silently=False)
+        return (request,"send_email.hmtl")
