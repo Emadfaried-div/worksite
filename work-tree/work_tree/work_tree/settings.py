@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'workapp',
     'accounts',
+    'xhtml2pdf',
     
     'mptt',
     'ckeditor',
@@ -50,7 +51,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     "bootstrap4",
     
-    
+    "templated_docs",
     
     
 ]
@@ -173,7 +174,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
+TEMPLATED_DOCS_LIBREOFFICE_PATH = '/usr/share/libreoffice/program'
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

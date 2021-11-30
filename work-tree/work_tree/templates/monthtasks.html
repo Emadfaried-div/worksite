@@ -9,15 +9,19 @@
   
 {% block content %}
 <h5 class="text-center" style='color:red'>( Current Month tasks)</h5>
-<a href="{% url 'month_task_create' %}"  class=" text-center"  style='text-decoration:none;'><button type="submit" class="btn btn-lg btn-primary" value='create ' style='float:right'>Create a new task</button></a>
+<a href="{% url 'month_task_create' %}"  class=" text-center"  style='text-decoration:none;'>
+    <button type="submit" class="btn btn-lg btn-primary" value='create ' style='float:right'>Create a new task</button></a><br> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a href="{% url 'pdfmonthcreate' %}"  class=" text-center"  style='text-decoration:none;'>
+        <button type="submit" class="btn btn-lg btn-primary   text-center" value='create ' >Save as a pdf</button></a>
 
 <div class="container">
     <div class="row">
         <div class="col-md-12">
+            {{myvar}}
              {% for data in dataset %}
  
-             ({{forloop.counter}}):&nbsp {{ data.monthtitle }}
+             ({{forloop.counter}}):&nbsp {{ data.task_date }}
              <p class="">{{ data.task }}</p>
+             <p class="">{{ data.area }}</p>
     <hr/>
  
     {% endfor %}

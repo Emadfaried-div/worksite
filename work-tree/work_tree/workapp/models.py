@@ -7,6 +7,7 @@ from datetime import date
 from ckeditor.fields import RichTextField
 from mptt.models import MPTTModel, TreeForeignKey
 from django.utils.translation import gettext as _
+from django.contrib.postgres.fields import ArrayField
 
 # Create your models here.
 def image_upload(instance,filename):
@@ -33,7 +34,7 @@ Area_CHOICES=(
     ('CAP_Inj','CAP_Inj'),
     ('CAP_assempl','CAP_assempl'),
     ('BP360AMP','BP360AMP'),
-    ('BP360LV','BP360LVt'),
+    ('BP360LV','BP360LV'),
     ('BP460','BP460'),
     ('BP312','BP312'),
 )  
@@ -134,10 +135,6 @@ class MonthlyReport(models.Model):
             'slug': self.slug
         }) 
 
-
-
-
-
 STATUS_CHOICES=(
     ('DONE','done'),
     ('NOT_YET','not-yet'),
@@ -197,8 +194,6 @@ class TheOrder(models.Model):
             'slug': self.slug
         })      
     
-    
-  
 class MonthMenets(models.Model):
     task_date=models.CharField(max_length=200,blank=True, null=True)
     task = models.CharField(max_length=200)
@@ -217,18 +212,18 @@ class Customer(models.Model):
     
     
 
-        
-
 class BroadCast_Email(models.Model):
     user= models.ForeignKey(User, on_delete=models.CASCADE,null=True)
     subject = models.CharField(max_length=200)
     created = models.DateTimeField(auto_now_add=True)
     message = RichTextField(blank=False, null=False)
 
-    
     def __unicode__(self):
         return self.subject
 
     class Meta:
         verbose_name = "BroadCast Email to all Member"
         verbose_name_plural = "BroadCast Email"
+        
+
+        

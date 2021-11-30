@@ -58,3 +58,5 @@ class SendMail(admin.ModelAdmin):
         
         send_mail("Hello","Hello there. this is automated message!","nemhfa@gmail.com",["efaried@icloud.com"],fail_silently=False)
     
+    
+    

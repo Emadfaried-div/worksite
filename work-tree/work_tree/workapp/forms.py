@@ -4,6 +4,7 @@ from django.forms import fields
 from . import models
 
 
+
 class MonthlyReportForm(forms.ModelForm):
     class Meta:
         model = models.MonthlyReport 

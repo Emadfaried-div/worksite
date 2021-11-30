@@ -1,4 +1,4 @@
-#!E:\work tree\src\work-tree\work_tree\Scripts\python.exe
+#!e:\work tree\src\work-tree\work_tree\scripts\python.exe
 # When the django-admin.py deprecation ends, remove this script.
 import warnings
 

@@ -6,6 +6,9 @@ from django.views.generic.base import TemplateView
 from . import forms
 from django.contrib.auth.models import User,AbstractUser
 import sys
+from xhtml2pdf import pisa
+from django.contrib.staticfiles import finders
+from django.template.loader import get_template
 from . models import *
 from multiprocessing import context
 from django.http import HttpResponseRedirect
@@ -13,7 +16,7 @@ from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from . utils import render_to_pdf #created in step 4
 from django.views.generic import ListView, TemplateView , DetailView , View, CreateView, FormView
 #from ecomapp.utils import password_reset_token
 from django.db.models import Sum
@@ -29,8 +32,8 @@ from .utils import password_reset_token
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required, permission_required    
-
-
+from templated_docs import fill_template
+from templated_docs.http import FileResponse
 from django.utils.translation import gettext as _
 from django.core.paginator import Paginator
 from idlelib import query
@@ -42,7 +45,9 @@ from idlelib import query
     ### context={
          ### 'order':order,
     ### }
-    ### return render(request,'home.html',context)
+def send(request):
+        send_mail("Hello","Hello there. this is automated message!","nemhfa@gmail.com",["efaried@icloud.com"],fail_silently=False)
+        return (request,"send_email.hmtl")    ### return render(request,'home.html',context)
     
 class HomeView(LoginRequiredMixin,TemplateView):
     paginate_by= 12
@@ -261,6 +266,12 @@ def delete_view(request, id):
         obj.delete()
         # after deleting redirect to
         # home page
+        send_mail(
+            subject="The notes has been deleted",
+            message="dialy note  has been deleted successfuly;",
+            from_email="nemhfa@gmail.com",
+            recipient_list=["nemhfa@gmail.com"]
+        )
         return HttpResponseRedirect("/")
  
     return render(request, "delete_view.html", context)
@@ -280,7 +291,14 @@ def update_view(request, id):
     # save the data from the form and
     # redirect to detail_view
     if form.is_valid():
+        
         form.save()
+        send_mail(
+            subject="The notes has been updated",
+            message="dialy note  has been updated successfuly;",
+            from_email="nemhfa@gmail.com",
+            recipient_list=["nemhfa@gmail.com"]
+        )
         return HttpResponseRedirect("/")
  
     # add form dictionary to context
@@ -382,7 +400,15 @@ class CustomerRegistrationView(CreateView):
         user=User.objects.create_user(username,email,password) # for here only customer created not user, to create user follow step line202
         form.instance.user= user
         login(self.request, user)
+        send_mail(
+            subject="New user has registered ",
+            message="The cleaned_data of the new user which registerd now is clearly in your pash ",
+            from_email="nemhfa@gmail.com",
+            recipient_list=["nemhfa@gmail.com"]
+        )
+        print (form.cleaned_data,"registerd now")
         return super().form_valid(form)
+        
     def get_success_url(self):
         if "next" in self.request.GET:
             next_url=self.request.GET.get("next") 
@@ -456,6 +482,49 @@ def list_view(request):
          
     return render(request, "monthtasks.html", context)
 
+class MonthTaskView(ListView):
+    model = MonthMenets
+    tmeplate_name = "monthtasks.html"
+def month_task_pdf_view(request,*args,**kwargs):
+    context ={}
+    context["dataset"] = MonthMenets.objects.all()
+    template_path = 'monthtasks.html'
+    context["dataset"] = MonthMenets.objects.all()
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="month_tasks_report.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+       html, dest=response)
+    # if error then show some funy view
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
+        
+
+
+def render_pdf_view(request):
+    template_path = 'user_printer.html'
+    context = {'myvar': 'this is your template context'}
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+       html, dest=response,)
+    # if error then show some funy view
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
+
 @login_required
 def monthtasksform(request):
      if request.method=='POST':
@@ -501,6 +570,59 @@ def send_message(request):
     return redirect(request,"home.html")
 
 
-def send(request):
-        send_mail("Hello","Hello there. this is automated message!","nemhfa@gmail.com",["efaried@icloud.com"],fail_silently=False)
-        return (request,"send_email.hmtl")
+#class GeneratePdf(View):
+   ### def get(self, request, *args, **kwargs):
+        ###data = {
+           ###  "invoice_id": 123,
+          ### "customer_name": "John Cooper",
+           ### "amount": 1399.99,
+           ### "today": "Today",
+       ### }
+       ### pdf = render_to_pdf('pdf/invoice.html', data)
+       ### return HttpResponse(pdf, content_type='application/pdf')
+
+
+### Force PDF Download:
+### class GeneratePDF(View):
+   ### def get(self, request, *args, **kwargs):
+       ### template = get_template('invoice.html')
+        ###context = {
+           ### "invoice_id": 123,
+           ### "customer_name": "John Cooper",
+           ### "amount": 1399.99,
+            ###"today": "Today",
+       ### }
+      ###  html = template.render(context)
+      ###  pdf = render_to_pdf('invoice.html', context)
+        ###if pdf:
+           ### response = HttpResponse(pdf, content_type='application/pdf')
+            ###filename = "Invoice_%s.pdf" %("12341231")
+           ### content = "inline; filename='%s'" %(filename)
+          ###  download = request.GET.get("download")
+            ###if download:
+               ### content = "attachment; filename='%s'" %(filename)
+           ### response['Content-Disposition'] = content
+           ### return response
+       ### return HttpResponse("Not found")
+    ###def get(self, request, *args, **kwargs):
+     ###   template = get_template('pdf/invoice.html')
+       ### context = {
+         ###   "invoice_id": 123,
+          ###  "customer_name": "John Cooper",
+           ### "amount": 1399.99,
+           ### "today": "Today",
+     ###   }
+       ### html = template.render(context)
+       ### pdf = render_to_pdf('pdf/invoice.html', context)
+       ### return pdf #HttpResponse(pdf, content_type='application/pdf')
+        
+     ###if pdf:
+           ### response = HttpResponse(pdf, content_type='application/pdf')
+          ###  filename = "Invoice_%s.pdf" %("12341231")
+           ### content = "inline; filename='%s'" %(filename)
+          ###  download = request.GET.get("download")
+           ### if download:
+           ###     content = "attachment; filename='%s'" %(filename)
+           ### response['Content-Disposition'] = content
+         ###   return response
+       ### return HttpResponse("Not found")

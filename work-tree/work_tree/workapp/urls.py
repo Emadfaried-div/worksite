@@ -41,4 +41,6 @@ urlpatterns = [
     path("login/",views.CustomerLoginView.as_view(), name="login"),
     path("logout/",views.CustomerLogoutView.as_view(), name="customerlogout"),
     path("send/",views.send,name="send"),
+    path('pdfmonthcreate/',views.month_task_pdf_view,name='pdfmonthcreate'),
+    
 ]
