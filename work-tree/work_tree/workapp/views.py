@@ -1,8 +1,11 @@
+from email import message
 from django.db.models.query_utils import Q
+from django.contrib.admin.filters import DateFieldListFilter
 from django.forms.forms import Form
 from django.shortcuts import redirect, render,get_object_or_404,HttpResponseRedirect
 from django.http import HttpResponse, request
 from django.views.generic.base import TemplateView
+
 from . import forms
 from django.contrib.auth.models import User,AbstractUser
 import sys
@@ -21,10 +24,10 @@ from django.views.generic import ListView, TemplateView , DetailView , View, Cre
 #from ecomapp.utils import password_reset_token
 from django.db.models import Sum
 from django.urls import reverse_lazy
-from datetime import datetime
+from datetime import datetime, date, timedelta, timezone, tzinfo
 from django.utils.crypto import get_random_string
 from django.core.paginator import Paginator
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
 from django.conf import settings
 from django.views.generic import TemplateView
 TemplateView.as_view(extra_context={'order': 'order'})
@@ -37,6 +40,9 @@ from templated_docs.http import FileResponse
 from django.utils.translation import gettext as _
 from django.core.paginator import Paginator
 from idlelib import query
+from celery import shared_task
+from django.utils import timezone
+from tzlocal import get_localzone # pip install tzlocal
 
 
 
@@ -195,13 +201,18 @@ class ReportCreateView(LoginRequiredMixin, CreateView):
     # return render(request,'daily_notes.html',context)
 class MyView( View):
     permission_required = ('can_view_daily notes', 'can_delete_daily notes',"can_view_the_order")
-   
+
+
 class DailyNotesView(LoginRequiredMixin,TemplateView):
     template_name= "daily_notes.html"
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
         context["daily_notes"]= DailyNotes.objects.all().order_by("id")
+        
+                
+            
         return context
+    
 
 #def dailynotescreate(request):
     # if request.method == "POST":
@@ -251,7 +262,7 @@ class DailyNotesCreateView(LoginRequiredMixin, CreateView):
 
 @login_required
 # delete view for details
-@permission_required('can_view_daily_notes', raise_exception=True)
+#@permission_required('can_view_daily_notes', raise_exception=True)
 def delete_view(request, id):
     # dictionary for initial data with
     # field names as keys
@@ -259,6 +270,7 @@ def delete_view(request, id):
  
     # fetch the object related to passed id
     obj = get_object_or_404(DailyNotes, id = id)
+    obj =DailyNotes.objects.get(id=id)
     context ={'obj':obj}
  
     if request.method =="POST":
@@ -268,9 +280,9 @@ def delete_view(request, id):
         # home page
         send_mail(
             subject="The notes has been deleted",
-            message="dialy note  has been deleted successfuly;",
+            message='Your task with title ({})  has deleted successfuly ({})'.format(obj.description, obj.due_date),
             from_email="nemhfa@gmail.com",
-            recipient_list=["nemhfa@gmail.com"]
+            recipient_list=[ p.email for p in User.objects.all() ]
         )
         return HttpResponseRedirect("/")
  
@@ -295,10 +307,13 @@ def update_view(request, id):
         form.save()
         send_mail(
             subject="The notes has been updated",
-            message="dialy note  has been updated successfuly;",
+            message='Task_id({})Your task ({}) has updated ,task due_date is({})'.format(obj.id, obj.description, obj.due_date),
             from_email="nemhfa@gmail.com",
-            recipient_list=["nemhfa@gmail.com"]
+            recipient_list=[ p.email for p in User.objects.all() ]
         )
+        
+        
+        
         return HttpResponseRedirect("/")
  
     # add form dictionary to context
@@ -491,8 +506,8 @@ def month_task_pdf_view(request,*args,**kwargs):
     template_path = 'monthtasks.html'
     context["dataset"] = MonthMenets.objects.all()
     # Create a Django response object, and specify content_type as pdf
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="month_tasks_report.pdf"'
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="month_tasks_report.xls"'
     # find the template and render it.
     template = get_template(template_path)
     html = template.render(context)
@@ -568,6 +583,15 @@ def send_message(request):
     pass
 
     return redirect(request,"home.html")
+
+
+
+
+
+
+def check_for_orders():      
+    pass
+
 
 
 #class GeneratePdf(View):

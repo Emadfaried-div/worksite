@@ -21,24 +21,29 @@
                         <th>Status</th>
                         <th style='color:red'>Delete</th>
                         <th>Edit</th>
-                        
-                       
-                        
-                        
-                        
+
+
+
+
+
                     </tr>
                 </thead>
                 <tbody>
-                    {% if perms.workapp.can_view_daily_notes %}
-    <!-- We can mark a BookInstance as returned. -->
+                  <!--  {% if perms.workapp.can_view_daily_notes %}
+     We can mark a BookInstance as returned. -->
     <!-- Perhaps add code to link to a "book return" view here. -->
 
                     {% for c in daily_notes %}
-                     
-               
+
+
                    <tr class=" text-center">
                         <td>{{forloop.counter}}</td>
-                        <td class="{% if c.is_overdue %}text-danger{% endif %}" > <del>{{c.description}}</del></td>
+                        {% if c.status == "DONE"  %}
+                        <td > <del>{{c.description}}</del></td>
+                        {% else %}
+                        <td class="{% if c.is_overdue %}text-danger{% endif %}" >{{c.description}}</></td>
+                        {% endif %}
+                        
                         <td class="{% if c.is_overdue %}text-danger{% endif %}">{{c.responsible}}</td>
                         <td>{{c.area}}</td>
                         <td class="{% if c.is_overdue %}text-danger{% endif %}">{{c.vendor}}</td>
@@ -51,10 +56,11 @@
                         {% endif %}
                         <td> <a href="{% url 'delete' c.id %}" class="">{{c.delete_obj}}</a></td>
                         <td> <a href="{% url 'update' c.id %}" class="">{{c.update_obj}}</a></td>
-                    
+
                    </tr>
-                  
-                   
+
+
+
                     {% endfor %}
                     {% endif %}
                 </tbody>

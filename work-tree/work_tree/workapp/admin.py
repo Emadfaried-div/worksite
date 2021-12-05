@@ -8,12 +8,19 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.core.mail import (send_mail, BadHeaderError, EmailMessage)
 from django.contrib.auth.models import User
+from mptt.admin import DraggableMPTTAdmin
+import admin_thumbnails
 # Register your models here.
-admin.site.register(TheOrder)
-admin.site.register(ThePo)
+
+@admin_thumbnails.thumbnail('image')
+class productImageInline(admin.TabularInline):
+    model = Images
+    readonly_fields = ('id',)
+    extra = 1
+
 admin.site.register(MonthlyReport)
 admin.site.register(DailyNotes)
-admin.site.register(TheOffer)
+admin.site.register(Images)
 admin.site.register(MonthMenets)
 admin.site.register(Admin)
 admin.site.register(Customer)
@@ -59,4 +66,41 @@ class SendMail(admin.ModelAdmin):
         send_mail("Hello","Hello there. this is automated message!","nemhfa@gmail.com",["efaried@icloud.com"],fail_silently=False)
     
     
+class ThePoAdmin(admin.ModelAdmin):
+    list_display = ['id','user', 'offer', 'title', 'image_img', 'vendor','date','quantity']  
+    readonly_fields = ('image_img',)
+    list_per_page = 10
+    search_fields = ['title','vendor']
+    inlines = [productImageInline]
+    prepopulated_fields = {'slug': ('title',)}    
     
+admin.site.register(ThePo,ThePoAdmin)    
+
+
+class TheOrderAdmin(admin.ModelAdmin):
+    list_display = ['user', 'offer', 'title', 'image_img', 'vendor','date','quantity'] 
+    readonly_fields = ('image_img',)
+    list_per_page = 10
+    search_fields = ['title','vendor']
+    inlines = [productImageInline]
+    prepopulated_fields = {'slug': ('title',)}
+    
+admin.site.register(TheOrder,TheOrderAdmin)      
+
+
+ 
+    
+ 
+
+
+    
+    
+class TheOfferAdmin(admin.ModelAdmin):
+    list_display = ['user', 'title', 'section', 'vendor','image_img','quantity','totalprice']  
+    readonly_fields = ('image_img',)
+    list_per_page = 10
+    search_fields = ['title','vendor']
+    inlines = [productImageInline]
+    prepopulated_fields = {'slug': ('title',)} 
+    
+admin.site.register(TheOffer,TheOfferAdmin)   

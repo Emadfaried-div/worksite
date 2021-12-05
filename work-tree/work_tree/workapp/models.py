@@ -4,6 +4,8 @@ from django.db.models.deletion import CASCADE
 from django.urls import reverse
 from django.conf import settings
 from datetime import date
+
+from django.utils.safestring import mark_safe
 from ckeditor.fields import RichTextField
 from mptt.models import MPTTModel, TreeForeignKey
 from django.utils.translation import gettext as _
@@ -13,6 +15,8 @@ from django.contrib.postgres.fields import ArrayField
 def image_upload(instance,filename):
     imagename , extension = filename.split(".")
     return "media/%s.%s"%(instance.id,extension)
+
+
 
 MARKET_CHOICES=(
     ('LOCAL','Local'), 
@@ -31,12 +35,15 @@ Area_CHOICES=(
     ('BM4','BM4'),
     ('BM5','BM5'),
     ('BM6','BM6'),
-    ('CAP_Inj','CAP_Inj'),
+    ('CAP_Inj Nessie1','CAP_Inj Nessie1'),
+    ('CAP_Inj Nessie2','CAP_Inj Nessie2'),
+    ('CAP_Inj Arburg','CAP_Inj Arburg'),
     ('CAP_assempl','CAP_assempl'),
     ('BP360AMP','BP360AMP'),
     ('BP360LV','BP360LV'),
     ('BP460','BP460'),
     ('BP312','BP312'),
+    ('Micro-lab','Micro-lab'),
 )  
 
 
@@ -90,6 +97,18 @@ class TheOffer(models.Model):
         return reverse("oneoffer", kwargs={
             'slug': self.slug
         }) 
+    def ImageUrl(self):
+            if self.image:
+                return self.image.url
+            else:
+               return ""
+
+    def image_img(self):
+        if self.image:
+            return mark_safe('<img src="{}" heights="70" width="60" />'.format(self.image.url))
+        else:
+            return '(Sin imagen)'
+    image_img.short_description = 'Thumb' 
 
 class ThePo(models.Model):
     user= models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
@@ -116,7 +135,13 @@ class ThePo(models.Model):
     def get_absolute_url(self):
         return reverse("po_details", kwargs={
             'slug': self.slug
-        })         
+        })  
+    def image_img(self):
+        if self.image:
+            return mark_safe('<img src="{}" heights="70" width="60" />'.format(self.image.url))
+        else:
+            return '(Sin imagen)'
+    image_img.short_description = 'Thumb'       
 
 
 class MonthlyReport(models.Model):
@@ -192,7 +217,13 @@ class TheOrder(models.Model):
     def get_absolute_url(self):
         return reverse("oneorder", kwargs={
             'slug': self.slug
-        })      
+        })   
+    def image_img(self):
+        if self.image:
+            return mark_safe('<img src="{}" heights="70" width="60" />'.format(self.image.url))
+        else:
+            return '(Sin imagen)'
+    image_img.short_description = 'Thumb'    
     
 class MonthMenets(models.Model):
     task_date=models.CharField(max_length=200,blank=True, null=True)
@@ -225,5 +256,14 @@ class BroadCast_Email(models.Model):
         verbose_name = "BroadCast Email to all Member"
         verbose_name_plural = "BroadCast Email"
         
+class Images(models.Model):
+    po = models.ForeignKey(ThePo, on_delete=models.CASCADE,blank=True,null=True)
+    offer= models.ForeignKey(TheOffer, on_delete=models.CASCADE,blank=True,null=True)
+    order = models.ForeignKey(TheOrder, on_delete=models.CASCADE,blank=True,null=True)
+    
+    title = models.CharField(max_length=20,blank=True,null=True)
+    image = models.ImageField(upload_to="product/")
 
+    def __str__(self):
+        return self.title 
         

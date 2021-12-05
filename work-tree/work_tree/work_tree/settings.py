@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+from celery import Celery
+from celery.schedules import crontab
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
@@ -42,6 +44,8 @@ INSTALLED_APPS = [
     'workapp',
     'accounts',
     'xhtml2pdf',
+    'import_export',
+    'celery',
     
     'mptt',
     'ckeditor',
@@ -184,3 +188,15 @@ EMAIL_HOST_PASSWORD = 'wvrapvugfecpitxp'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_PORT = '587'
+
+
+CELERY_BROKER_URL = 'https://nemhfa:wvrapvugfecpitxp@localhost:587/myvhost' 
+CELERY_TIMEZONE = 'Africa/Egypt' #for example 
+CELERY_IMPORTS = ['workapp.tasks']
+CELERY_BEAT_SCHEDULE = {
+'celery_test': {
+
+    'task': 'workapp.tasks.check_for_orders',
+    'schedule': crontab(minute=0, hour=0), #every day at midnight
+},
+}
