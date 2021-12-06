@@ -4,6 +4,7 @@ from . import views
 
 
 
+
 urlpatterns = [
     
     
@@ -42,5 +43,6 @@ urlpatterns = [
     path("logout/",views.CustomerLogoutView.as_view(), name="customerlogout"),
     path("send/",views.send,name="send"),
     path('pdfmonthcreate/',views.month_task_pdf_view,name='pdfmonthcreate'),
+    
     
 ]

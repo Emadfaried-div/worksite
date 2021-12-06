@@ -88,15 +88,8 @@ class TheOrderAdmin(admin.ModelAdmin):
 admin.site.register(TheOrder,TheOrderAdmin)      
 
 
- 
-    
- 
-
-
-    
-    
 class TheOfferAdmin(admin.ModelAdmin):
-    list_display = ['user', 'title', 'section', 'vendor','image_img','quantity','totalprice']  
+    list_display = ['customer', 'title', 'section', 'vendor','image_img','quantity','totalprice']  
     readonly_fields = ('image_img',)
     list_per_page = 10
     search_fields = ['title','vendor']

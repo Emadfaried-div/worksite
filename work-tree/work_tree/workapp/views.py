@@ -43,8 +43,10 @@ from idlelib import query
 from celery import shared_task
 from django.utils import timezone
 from tzlocal import get_localzone # pip install tzlocal
-
-
+import io
+from io import StringIO
+from io import BytesIO
+import xlsxwriter
 
 ###def home(request):
    ###  order=TheOrder.objects.all()
@@ -208,10 +210,9 @@ class DailyNotesView(LoginRequiredMixin,TemplateView):
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
         context["daily_notes"]= DailyNotes.objects.all().order_by("id")
-        
-                
-            
         return context
+    
+
     
 
 #def dailynotescreate(request):
@@ -566,9 +567,15 @@ class CustomerProfileView(TemplateView):
     def get_context_data(self, **kwargs):
         context= super().get_context_data(**kwargs)
         customer= self.request.user.customer
-        context["customer"]=customer
+        
         orders=TheOrder.objects.all() 
-        context["orders"]= orders
+        offers=TheOffer.objects.all()
+        pos = ThePo.objects.all()
+        context = {"orders":orders,
+                   "offers":offers,
+                   "pos":pos,
+                   } 
+        context["customer"]=customer
         return context
 
 
@@ -650,3 +657,6 @@ def check_for_orders():
            ### response['Content-Disposition'] = content
          ###   return response
        ### return HttpResponse("Not found")
+       
+       
+       

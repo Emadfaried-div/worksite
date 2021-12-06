@@ -43,6 +43,41 @@
             </table>
 
         </div>
+        <div class="col-md-4"><h3></h3> <hr>
+            
+        </div>
+        <div class="col-md-8">
+            <h3>Previous PO</h3><hr>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>SN.</th>
+                        
+                        <th>title.</th>
+                        <th>date.</th>
+                        <th>user</th>
+                        
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                        {% for order in pos %}
+                       
+                       
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                       
+                            <td>{{order.title}}</td>
+                            <td>{{order.date}} ago</td>
+                            <td>{{order.user}}</td>
+                           
+                        </tr>
+                        {% endfor %}
+                       
+                </tbody>
+            </table>
+        </div>
         
     </div>
 </div>

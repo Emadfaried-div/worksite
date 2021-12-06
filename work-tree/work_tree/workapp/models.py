@@ -44,6 +44,8 @@ Area_CHOICES=(
     ('BP460','BP460'),
     ('BP312','BP312'),
     ('Micro-lab','Micro-lab'),
+    ('Micro-Chimical','Micro-Chimical'),
+    ('BM-Piovan','BM-Piovan'),
 )  
 
 
@@ -59,6 +61,7 @@ VENDOR_CHOICES=(
     ('ITALIX','ITALIX'),
     ('FESTO','FESTO'),
     ('SMC','SMC'),
+    ('RS','RS'),
     ('NOORGREEN','NOORGREEN'),
     ('REXROTH','REXROTH'),
     ('TALAT_ELMASRY','TALAT_ELMASRY'),
@@ -71,9 +74,18 @@ class Admin(models.Model):
     def __str__(self):
         return self.user.username
 
+class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    full_name = models.CharField(max_length = 200) 
+    address = models.CharField(max_length = 200 , blank=True, null=True) 
+    joined_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.full_name    
+
 
 class TheOffer(models.Model):
-    user= models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
+    customer= models.ForeignKey(Customer,on_delete=models.CASCADE,blank=True,null=True)
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique = False)
     section=models.CharField(max_length=100,choices=SECTION_CHOICES,default='mechanical',blank=True,null=True)
@@ -105,7 +117,7 @@ class TheOffer(models.Model):
 
     def image_img(self):
         if self.image:
-            return mark_safe('<img src="{}" heights="70" width="60" />'.format(self.image.url))
+            return mark_safe('<img src="{}" heights="90" width="90" />'.format(self.image.url))
         else:
             return '(Sin imagen)'
     image_img.short_description = 'Thumb' 
@@ -138,7 +150,7 @@ class ThePo(models.Model):
         })  
     def image_img(self):
         if self.image:
-            return mark_safe('<img src="{}" heights="70" width="60" />'.format(self.image.url))
+            return mark_safe('<img src="{}" heights="90" width="90" />'.format(self.image.url))
         else:
             return '(Sin imagen)'
     image_img.short_description = 'Thumb'       
@@ -198,7 +210,7 @@ class TheOrder(models.Model):
     offer=models.ForeignKey(TheOffer, on_delete=models.CASCADE,blank=True, null=True)
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique = True)
-    dept  = models.CharField(max_length=200,blank=True, null=True)
+    area = models.CharField(max_length=100,choices=Area_CHOICES,default='?',blank=True,null=True)
     section=models.CharField(max_length=100,choices=SECTION_CHOICES,default='mechanical',blank=True,null=True)
     market= models.CharField(max_length=200,choices=MARKET_CHOICES,default='Local', blank=True,null=True)
     vendor = models.CharField(max_length=200,choices=VENDOR_CHOICES,default='?',blank=True, null=True)
@@ -220,7 +232,7 @@ class TheOrder(models.Model):
         })   
     def image_img(self):
         if self.image:
-            return mark_safe('<img src="{}" heights="70" width="60" />'.format(self.image.url))
+            return mark_safe('<img src="{}" heights="90" width="90" />'.format(self.image.url))
         else:
             return '(Sin imagen)'
     image_img.short_description = 'Thumb'    
@@ -232,14 +244,7 @@ class MonthMenets(models.Model):
     def __str__(self):
         return self.task
     
-class Customer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    full_name = models.CharField(max_length = 200) 
-    address = models.CharField(max_length = 200 , blank=True, null=True) 
-    joined_on = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.full_name    
     
     
 
