@@ -8,40 +8,50 @@
 <body>
     {% block content %}
     <div class="container">
+        <div class="col-md-4">
+                                <form class="d-flex" action="{% url 'order_search' %}"  method="GET" >
+                                    <input class="form-control mr-sm-2" type="text" placeholder="Search for your Po here..."  name="keyword"  required >
+                                    <button class="btn btn-danger" type="submit">order_Search</button>
+
+                            </form>
+                            </div>
         <div class="row wow fadeIn">
             <h2 class='text-center'> Orders List</h2>
+            <a href="{% url 'order_create' %}" ><button  type="submit" class="btn btn-lg btn-primary" value='create' style='float:right'  >Creat an Order</button></a><hr>
             {% if perms.workapp.can_view_the_order %}
       {% for p in order %}
       <div class="col-md-3  ">
           <div class="card border=0 "> <a href="{% url 'oneorder' p.slug %}"  class="page-link"><h4  class="dark-grey-text  " style= "color:red;">&nbsp{{p.title}}</h4></a>
-            
-               
-            
-           
-          <a href="{% url 'oneorder' p.slug %}" class="page-link  "   ><img src="{{p.image.url}}" alt="" width="200"  style="height: 250px;object-fit:contain; "></a> 
+
+
+
+
+          <a href="{% url 'oneorder' p.slug %}" class="page-link  "   ><img src="{{p.image.url}}" alt="" width="200"  style="height: 250px;object-fit:contain; "></a>
         </div>
         <h6>The vendor:&nbsp{{p.vendor}}</h6>
            <h6 class="">count_of_offers:&nbsp{{p.numbers_of_offers}}</h6>
-           
+           <h6 class="">store_code:&nbsp{{p.store_code}}</h6>
+
            <a href="" class=""><h6>offer_Id:&nbsp&nbsp{{ p.offer.id}}</h6></a>
-                
+
            <h6>offer_price= &nbsp({{ p.offer.totalprice}}EGP</h6>
-        
-   
-        
-        
-        
-        
-          
-      
+           <h6>dept:&nbsp{{p.dept}}</h6>
+
+
+
+
+
+
+
+
      </div>
-      
-      
+
+
       {% endfor %}
       {% endif %}
         </div>
     </div>
-      
+
     {% endblock content %}
 </body>
 </html>

@@ -6,59 +6,58 @@
 {% block content %}
 <div class="container">
     <div class="row">
-      <h2 class='text-center'>The Offer details</h2><h6 style='color:blue;'>View count({{one_offer.view_count}})</h6><hr>
       <div class="col-md-12">
-        
-        <table class="table">
+
+        <table class="table text-center">
           <thead>
               <tr >
-                 
-                  <th>offer Title</th>
-                  <th>offer vendor</th>
-                  <th>Market Area</th>
-                  <th>Quantity</th>
-                  <th>total price(EGP)</th>
-                  <th>offer1_image</th>
-                  <th>offer2_image</th>
-                  <th>part image</th>
-                  
-                 
+
+                  <th style="background-color: #96D4D4;border: 1px solid black;">offer Title</th>
+                  <th style="background-color: #96D4D4;border: 1px solid black;">offer vendor</th>
+                  <th style="background-color: #96D4D4;border: 1px solid black;">Market Area</th>
+                  <th style="background-color: #96D4D4;border: 1px solid black;">Quantity</th>
+                  <th style="background-color: #96D4D4;border: 1px solid black;">total price(EGP)</th>
+                  <th style="background-color: #96D4D4;border: 1px solid black;">offer1_image</th>
+                  <th style="background-color: #96D4D4;border: 1px solid black;">offer2_image</th>
+                  <th style="background-color: #96D4D4;border: 1px solid black;">part image</th>
+
+
               </tr>
-              
+
           </thead>
           <tbody>
-                  
+
                   <tr >
-                   
-                      
-                   
-                    <td >{{one_offer.title}}</td>
-                    <td >{{one_offer.vendor}}</td>
-                    <td >{{one_offer.market}}</td>
-                    <td >{{one_offer.quantity}}</td>
-                    <td >{{one_offer.totalprice}}(EGP)</td>
-                    <td><img src="{{ one_offer.image.url}}" style="height: 75px;" alt=""  ></td>
-                   
-                    {% if one_offer.offer2_image2 %}<td><img src="{{ one_offer.offer2_image2.url}}" style="height: 75px;" alt=""  ></td>{% endif %}
-                    
-                   {% if one_offer.image_of_offer %}<td><img src="{{ one_offer.image_of_offer.url}}" style="height: 75px;" alt=""  ></td>{% endif %}
-                  
-                   
-                   
+
+
+
+                    <td style="background-color: #96D4D4;border: 1px solid black;" >{{one_offer.title}}</td>
+                    <td style="background-color: #96D4D4;border: 1px solid black;" >{{one_offer.vendor}}</td>
+                    <td style="background-color: #96D4D4;border: 1px solid black;" >{{one_offer.market}}</td>
+                    <td style="background-color: #96D4D4;border: 1px solid black;" >{{one_offer.quantity}}</td>
+                    <td style="background-color: #96D4D4;border: 1px solid black;" >{{one_offer.totalprice}}(EGP)</td>
+                    <td style="background-color: #96D4D4;border: 1px solid black;"><img src="{{ one_offer.image.url}}" style="height: 75px;" alt=""  ></td>
+
+                    {% if one_offer.offer2_image2 %}<td style="background-color: #96D4D4;border: 1px solid black;"><img src="{{ one_offer.offer2_image2.url}}" style="height: 75px;" alt=""  ></td>{% endif %}
+
+                   {% if one_offer.image_of_offer %}<td style="background-color: #96D4D4;border: 1px solid black;"><img src="{{ one_offer.image_of_offer.url}}" style="height: 75px;" alt=""  ></td>{% endif %}
+
+
+
                 </tr>
-                 
-                  
-                  
-                  
-               
-                  
-                 
-                  
+
+
+
+
+
+
+
+
           </tbody>
       </table>
       </div>
 
-     
+
     </div>
 </div>
 

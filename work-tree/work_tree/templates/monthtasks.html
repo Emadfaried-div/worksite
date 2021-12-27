@@ -6,26 +6,34 @@
 
 
 
-  
+
 {% block content %}
-<h5 class="text-center" style='color:red'>( Current Month tasks)</h5>
+<h5 class="text-center" style='color:red'>( a ccomplished month tasks)</h5>
 <a href="{% url 'month_task_create' %}"  class=" text-center"  style='text-decoration:none;'>
-    <button type="submit" class="btn btn-lg btn-primary" value='create ' style='float:right'>Create a new task</button></a><br> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a href="{% url 'pdfmonthcreate' %}"  class=" text-center"  style='text-decoration:none;'>
-        <button type="submit" class="btn btn-lg btn-primary   text-center" value='create ' >Save as a pdf</button></a>
+    <button type="submit" class="btn btn-lg btn-primary" value='create ' style='float:right'>Create a new task</button></a><br> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<hr>
 
 <div class="container">
     <div class="row">
+
         <div class="col-md-12">
-            {{myvar}}
-             {% for data in dataset %}
- 
-             ({{forloop.counter}}):&nbsp {{ data.task_date }}
-             <p class="">{{ data.task }}</p>
-             <p class="">{{ data.area }}</p>
-    <hr/>
- 
-    {% endfor %}
-    
+            <table class="table text-center">
+                <thead>
+                    <tr>
+                        <th style="background-color: #96D4D4;border: 1px solid black;" >Task-Date</th>
+                        <th style="background-color: #96D4D4;border: 1px solid black;" >Task-Description</th>
+                        <th style="background-color: #96D4D4;border: 1px solid black;" >Location</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in dataset %}
+                    <tr>
+                        <td style="background-color: #96D4D4;border: 1px solid black;">{{ data.task_date }}</td>
+                        <td style="background-color: #96D4D4;border: 1px solid black;">{{ data.task }}</td>
+                        <td style="background-color: #96D4D4;border: 1px solid black;">{{ data.area }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

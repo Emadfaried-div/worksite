@@ -1,0 +1,76 @@
+
+{% extends "base.html" %}
+
+{% load static %}
+{% load i18n %}
+
+{% block titel %} search {% endblock %}
+
+
+
+
+{% block content %}
+<div class="container">
+
+
+
+
+<section class="text-center mb-4">
+    <hr class="">
+    <div class="container">
+        <div class="raw">
+            <div class="col-md-12">
+    <h3 class="text">search results for  <span class="text-info">"{{request.GET.keyword}}"</span></h3>
+            </div>
+        </div>
+    </div>
+    <hr class="">
+
+
+  </section>
+  <div class = "col-md-12">
+            <table class="table">
+            <thead>
+                <tr class = "text-center">
+                    <th>ID</th>
+                    <th> title</th>
+                    <th>description </th>
+                    <th>Vendor </th>
+                    <th>Market </th>
+                    <th>store_code</th>
+
+
+                </tr>
+
+            </thead>
+            <tbody>
+                            {% for order in orders %}
+                    <tr class = "text-center">
+                        <td >{{forloop.counter}}</td>
+                      <td >{{ order.title}}</td>
+                      <td >{{ order.description|safe}}</td>
+                      <td >{{ order.vendor}}</td>
+                      <td >{{ order.market}}</td>
+                      <td>{{order.store_code}}</td>
+
+
+
+
+
+                  </tr>
+
+                    {% endfor%}
+
+
+
+
+            </tbody>
+        </table>
+
+        </div>
+  <!--Section: Products v.3-->
+
+  <!--Pagination-->
+
+
+  {% endblock content %}

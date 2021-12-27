@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import *
+from . models import StoreCode,Jop_Order
 from django.utils.safestring import mark_safe
 import threading
 from modeltranslation.admin import TranslationAdmin
@@ -10,7 +11,9 @@ from django.core.mail import (send_mail, BadHeaderError, EmailMessage)
 from django.contrib.auth.models import User
 from mptt.admin import DraggableMPTTAdmin
 import admin_thumbnails
+from import_export.admin import ImportExportActionModelAdmin
 # Register your models here.
+
 
 @admin_thumbnails.thumbnail('image')
 class productImageInline(admin.TabularInline):
@@ -19,11 +22,13 @@ class productImageInline(admin.TabularInline):
     extra = 1
 
 admin.site.register(MonthlyReport)
-admin.site.register(DailyNotes)
+#admin.site.register(DailyNotes)
 admin.site.register(Images)
-admin.site.register(MonthMenets)
+#admin.site.register(MonthMenets)
 admin.site.register(Admin)
 admin.site.register(Customer)
+#admin.site.register(StoreCode)
+#admin.site.register(Jop_Order)
 
 class EmailThread(threading.Thread):
     def __init__(self, subject, html_content, recipient_list):
@@ -62,38 +67,62 @@ admin.site.register(BroadCast_Email, BroadCast_Email_Admin)
 class SendMail(admin.ModelAdmin):
     def send(self):
         self.send_mail= send_mail
-        
+
         send_mail("Hello","Hello there. this is automated message!","nemhfa@gmail.com",["efaried@icloud.com"],fail_silently=False)
-    
-    
+
+
 class ThePoAdmin(admin.ModelAdmin):
-    list_display = ['id','user', 'offer', 'title', 'image_img', 'vendor','date','quantity']  
-    readonly_fields = ('image_img',)
-    list_per_page = 10
-    search_fields = ['title','vendor']
-    inlines = [productImageInline]
-    prepopulated_fields = {'slug': ('title',)}    
-    
-admin.site.register(ThePo,ThePoAdmin)    
-
-
-class TheOrderAdmin(admin.ModelAdmin):
-    list_display = ['user', 'offer', 'title', 'image_img', 'vendor','date','quantity'] 
+    list_display = ['id','user', 'offer', 'title', 'image_img', 'vendor','date','document','quantity']
     readonly_fields = ('image_img',)
     list_per_page = 10
     search_fields = ['title','vendor']
     inlines = [productImageInline]
     prepopulated_fields = {'slug': ('title',)}
-    
-admin.site.register(TheOrder,TheOrderAdmin)      
+
+admin.site.register(ThePo,ThePoAdmin)
 
 
-class TheOfferAdmin(admin.ModelAdmin):
-    list_display = ['customer', 'title', 'section', 'vendor','image_img','quantity','totalprice']  
+class TheOrderAdmin(admin.ModelAdmin):
+    list_display = ['user', 'offer', 'title', 'image_img', 'vendor','date','quantity']
     readonly_fields = ('image_img',)
     list_per_page = 10
     search_fields = ['title','vendor']
     inlines = [productImageInline]
-    prepopulated_fields = {'slug': ('title',)} 
-    
-admin.site.register(TheOffer,TheOfferAdmin)   
+    prepopulated_fields = {'slug': ('title',)}
+
+admin.site.register(TheOrder,TheOrderAdmin)
+
+
+class TheOfferAdmin(admin.ModelAdmin):
+    list_display = [ 'title', 'section', 'vendor','image_img','quantity','totalprice']
+    readonly_fields = ('image_img',)
+    list_per_page = 10
+    search_fields = ['title','vendor']
+    inlines = [productImageInline]
+    prepopulated_fields = {'slug': ('title',)}
+
+admin.site.register(TheOffer,TheOfferAdmin)
+
+
+class StoreCodeAdmin(ImportExportActionModelAdmin):
+    list_display =['short_item_no', 'item_code', 'description1', 'description2', 'Search_text', 'Sp_Branch', 'location', 'g_l_cat']
+    search_fields = ['short_item_no','item_code','description1','location']
+admin.site.register(StoreCode,StoreCodeAdmin)
+
+@admin.register(MonthMenets)
+class MonthMenetsAdmin(ImportExportActionModelAdmin):
+    list_display =['task_date', 'task', 'area']
+    pass
+
+@admin.register(DailyNotes)
+class DailyNotesAdmin(ImportExportActionModelAdmin):
+    list_display =['id', 'responsible', 'description', 'area', 'vendor', 'created_at', 'due_date', 'status','delete_obj','update_obj','user_id']
+    pass
+
+class Jop_OrderAdmin(admin.ModelAdmin):
+    list_display = ['noun_damage','possible_cause','repair_steps','used_spare_parts','store_code','reporting_time','repair_start_time','repair_end_time','date','image']
+    list_per_page = 10
+    readonly_fields = ('image_img',)
+    #inlines = [productImageInline]
+    prepopulated_fields = {'slug': ('noun_damage',)}
+admin.site.register(Jop_Order,Jop_OrderAdmin)

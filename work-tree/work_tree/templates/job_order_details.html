@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+<head>
+    {% block title %}  {% endblock %}
+</head>
+<body>
+    {% block content %}
+    <div class="container"  style="background-color:#F0E68C">
+        <div class="row">
+            <div class = "col-md-6">
+                <ul>
+                  <li class="page-link" style="color:black; background-color:#F0E68C" >DepT.:&nbsp&nbsp<h4 style="color:red;"><h4 style="color:red;">{{one_jop.departement}}</h4></h4></li>
+                      <li class="page-link"  style="color:black; background-color:#F0E68C">Machine_ID:&nbsp&nbsp<h4 style="color:red;">{{one_jop.machine_id}}</h4></li>
+                      <li class="page-link"  style="color:black; background-color:#F0E68C">reporting_time:&nbsp&nbsp<h4 style="color:red;">{{one_jop.reporting_time}}</h4></li>
+                      <li class="page-link"  style="color:black; background-color:#F0E68C">Date:&nbsp&nbsp<h4 style="color:red;">{{one_jop.date}}</h4></li>
+                </ul>
+            </div>
+            <div class = "col-md-6">
+                <ul>
+                      <li class="page-link"  style="color:black; background-color:#F0E68C">repair_start_time.:&nbsp&nbsp<h4 style="color:red;">{{one_jop.repair_start_time}}</h4></li>
+                      <li class="page-link"  style="color:black; background-color:#F0E68C">repair_end_time:&nbsp&nbsp<h4 style="color:red;">{{one_jop.repair_end_time}}</h4></li>
+                      <li class="page-link"  style="color:black; background-color:#F0E68C">section_head:&nbsp&nbsp<h4 style="color:red;">{{one_jop.section_head}}</h4></li>
+                      <li class="page-link"  style="color:black; background-color:#F0E68C">noun_damage:&nbsp&nbsp<h4 style="color:red;">{{one_jop.noun_damage}}</h4></li>
+                </ul>
+            </div>
+            <div class="col-md-12">
+                <ul>
+                     <li class="page-link"  style="color:black; background-color:#F0E68C">possible_cause:&nbsp&nbsp<h4 style="color:red;">{{one_jop.possible_cause}}</h4></li>
+                     <li class="page-link"  style="color:black; background-color:#F0E68C">repair_steps:&nbsp&nbsp<h4 style="color:red;">{{one_jop.repair_steps|safe}}</h4></li>
+                     <li class="page-link"  style="color:black; background-color:#F0E68C">used_spare_parts.:&nbsp&nbsp<h4 style="color:red;">{{one_jop.used_spare_parts}}</h4></li>
+                     <li class="page-link"  style="color:black; background-color:#F0E68C">repairer:&nbsp&nbsp<h4 style="color:red;">{{one_jop.repairer}}</h4></li>
+                     <li class="page-link"  style="color:black; background-color:#F0E68C">responseble_eng:&nbsp&nbsp<h4 style="color:red;">{{one_jop.responseble_eng}}</h4></li>
+                     <li class="page-link text-center"><img src="{{ one_jop.image.url}}" style="height: 75px;" alt=""  ></li>
+                     <li class="page-link text-center"><img src="{{ one_jop.job_order_image.url}}" style="height: 75px;" alt=""  ></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+     {% endblock content %}
+</body>
+</html>

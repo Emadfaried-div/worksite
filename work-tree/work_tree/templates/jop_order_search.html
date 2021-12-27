@@ -1,0 +1,92 @@
+
+{% extends "base.html" %}
+
+{% load static %}
+{% load i18n %}
+
+{% block titel %} search {% endblock %}
+
+
+
+
+{% block content %}
+<div class="container">
+
+
+
+
+<section class="text-center mb-4">
+    <hr class="">
+    <div class="container">
+        <div class="raw">
+            <div class="col-md-12">
+    <h3 class="text">search results for  <span class="text-info">"{{request.GET.keyword}}"</span></h3>
+            </div>
+        </div>
+    </div>
+    <hr class="">
+    <div class="row wow fadeIn">
+
+
+
+
+
+        {% for result in jobs %}
+      <div class="col-lg-3 col-md-6 mb-4 card ">
+    <a href="{% url 'one_jop' result.slug %}"><p style="color:red;">press for more details</p></a>
+        <div class="card border-0">
+
+          <div class="view overlay">
+            {% comment %} <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg" class="card-img-top" {% endcomment %}
+
+            <a href="{% url 'one_jop' result.slug %}"></a>
+              <div class="mask rgba-white-slight"></div>
+              <img src="{{result.image.url}}" class="img-fluid" style="height: 250px;object-fit:contain; " >
+            </a>
+          </div>
+
+          <div class="card-body text-center">
+
+
+
+            <h5>
+              <strong>
+                <a href="{% url 'one_jop' result.slug  %}" class="dark-grey-text">noun_damage:&nbsp{{result.noun_damage}}
+
+
+
+                </a><hr>
+
+                 <h6>The possible_cause:&nbsp{{result.possible_cause}}</h6>
+              </strong>
+              <h6>repair_steps:&nbsp{{result.repair_steps|safe}}</h6>
+            </h5>
+
+
+             <h4 class="font-weight-bold blue-text">
+                <h6 class="lead">
+                    <h6>used_spare_parts:&nbsp{{result.used_spare_parts}}</h6>
+                </h6>
+                <h6 class="lead">
+                    <h6>repairer:&nbsp{{result.repairer}}</h6>
+                </h6>
+
+
+                </strong>
+              </h4>
+
+          </div>
+
+        </div>
+
+      </div>
+      {% endfor %}
+    </div>
+
+  </section>
+  <!--Section: Products v.3-->
+
+  <!--Pagination-->
+
+
+  {% endblock content %}

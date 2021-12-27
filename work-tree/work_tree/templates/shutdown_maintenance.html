@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="background-color: #96D4D4;border: 1px solid black;" >Task ID</th>
+                        <th style="background-color: #96D4D4;border: 1px solid black;">task description</th>
+                        <th style="background-color: #96D4D4;border: 1px solid black;" >task duration</th>
+                        <th style="background-color: #96D4D4;border: 1px solid black;" >start date</th>
+                        <th style="background-color: #96D4D4;border: 1px solid black;" >end date</th>
+                    </tr>                                      
+                </thead>
+                <tbody>
+                   
+                    <tr >
+                    <th rowspan="2" style="background-color: #6aee80;border: 1px solid black;" >LVBP360</th>
+                    <td  style="background-color: #6aee80;border: 1px solid black;" >replace a filling tubes repair kits</td>
+                    <td style="background-color: #6aee80;border: 1px solid black;">1_Day</td>
+                    <td style="background-color: #6aee80;border: 1px solid black;">28/12/2021</td>
+                    <td style="background-color: #6aee80;border: 1px solid black;" >29/12/2021</td>
+                    </tr>
+                    <tr >
+                        <td  style="background-color: #6aee80;border: 1px solid black;" >adjust the comp. air for over run cylinder</td>
+                        <td  style="background-color: #6aee80;border: 1px solid black;">0.5_Day</td>
+                        <td  style="background-color: #6aee80;border: 1px solid black;">29/12/2021</td>
+                        <td  style="background-color: #6aee80;border: 1px solid black;">29/12/2021</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="3" style="background-color: #96D4D4;border: 1px solid black;" >SVBP360</th>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >replace the pressure hose for the hydraulic pump</td>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >0.5_Day</td>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >29/12/2021</td>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >30/12/2021</td>
+
+                    </tr>
+                    <tr>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >replace a new Rotary</td>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >1_Day</td>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >30/12/2021</td>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >31/12/2021</td>
+                    </tr>
+                    <tr>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >try to operate particulate counter</td>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >0.5_Day</td>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >31/12/2021</td>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >31/12/2021</td>
+                    </tr>
+                        
+
+                    
+                    <tr>
+                        <th rowspan="3" style="background-color: #f0d57c;border: 1px solid black;" >SVBP312</th>
+                        <td  style="background-color: #f0d57c;border: 1px solid black;" >refill a hydraulic oil tank</td>
+                        <td  style="background-color: #f0d57c;border: 1px solid black;" >0.5_Day</td>
+                        <td  style="background-color: #f0d57c;border: 1px solid black;" >31/12/2021</td>
+                        <td  style="background-color: #f0d57c;border: 1px solid black;" >31/12/2021
+                    </tr>
+                    <tr>
+                        <td  style="background-color: #f0d57c;border: 1px solid black;" >clean die and core</td>
+                        <td  style="background-color: #f0d57c;border: 1px solid black;" >0.5_Day</td>
+                        <td  style="background-color: #f0d57c;border: 1px solid black;" >1/1/2021</td>
+                        <td  style="background-color: #f0d57c;border: 1px solid black;" >1/1/2021
+                    </tr>
+                    <tr>
+                        <td  style="background-color: #f0d57c;border: 1px solid black;" >refill the extruder gearbox oil</td>
+                        <td  style="background-color: #f0d57c;border: 1px solid black;" >0.5_Day</td>
+                        <td  style="background-color: #f0d57c;border: 1px solid black;" >1/1/2022</td>
+                        <td  style="background-color: #f0d57c;border: 1px solid black;" >1/1/2022
+                    </tr>
+                    <tr>
+                        <th style="background-color: #96D4D4;border: 1px solid black;" >SVBP460</th>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >refill the extruder gearbox oil</td>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >0.5_Day</td>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >2/1/2022</td>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >2/1/2022</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2" style="background-color: #96D4D4;border: 1px solid black;" >ARBURG</th>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >check and maintain the robot</td>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >0.5_Day</td>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >2/1/2022</td>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >2/1/2022</td>
+                    </tr>
+                    <tr>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >reoperate the cavity No.7</td>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >1_Day</td>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >3/1/2022</td>
+                        <td  style="background-color: #96D4D4;border: 1px solid black;" >3/1/2022</td>
+                    </tr>
+                    
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>  
+
+{% endblock content %}

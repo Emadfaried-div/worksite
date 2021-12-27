@@ -12,8 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
-from celery import Celery
-from celery.schedules import crontab
+#from celery import Celery
+#from celery.schedules import crontab
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'accounts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,13 +43,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'workapp',
-    'accounts',
+    
+    'maintenance',
     'xhtml2pdf',
     'import_export',
-    'celery',
+    
     
     'mptt',
     'ckeditor',
+    'ckeditor_uploader',
     'django.contrib.humanize',
     
     
@@ -95,16 +98,12 @@ WSGI_APPLICATION = 'work_tree.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {     
-'default': {
- 'ENGINE': 'django.db.backends.postgresql_psycopg2',
- 'NAME': 'work_treedb',
- 'USER': 'postgres',
- 'PASSWORD': 'Emad700700',
- 'HOST': 'localhost',
- 'PORT': '5432'  
-} 
-} 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
 
 # Password validation
@@ -190,13 +189,31 @@ EMAIL_USE_SSL = False
 EMAIL_PORT = '587'
 
 
-CELERY_BROKER_URL = 'https://nemhfa:wvrapvugfecpitxp@localhost:587/myvhost' 
-CELERY_TIMEZONE = 'Africa/Egypt' #for example 
-CELERY_IMPORTS = ['workapp.tasks']
-CELERY_BEAT_SCHEDULE = {
-'celery_test': {
+#CELERY_BROKER_URL = 'https://nemhfa:wvrapvugfecpitxp@localhost:587/myvhost' 
+#CELERY_TIMEZONE = 'Africa/Egypt' #for example 
+#CELERY_IMPORTS = ['workapp.tasks']
+#CELERY_BEAT_SCHEDULE = {
+#'celery_test': {
 
-    'task': 'workapp.tasks.check_for_orders',
-    'schedule': crontab(minute=0, hour=0), #every day at midnight
-},
+   #'task': 'workapp.tasks.check_for_orders',
+    #'schedule': crontab(minute=0, hour=0), #every day at midnight
+#},
+#}
+
+SITE_ID = 1
+
+####################################
+    ##  CKEDITOR CONFIGURATION ##
+####################################
+
+CKEDITOR_JQUERY_URL = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'
+
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_IMAGE_BACKEND = "pillow"
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': None,
+    },
 }
+

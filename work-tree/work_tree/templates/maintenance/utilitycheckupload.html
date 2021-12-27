@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <form   class='site-form'    method="POST"   action= "{% url 'maintenance:utilitychecklist_upload' %} " enctype="multipart/form-data" >
+                {% csrf_token %}
+                {{form1|crispy}}<br>
+                <button type="submit" class="btn btn-lg btn-primary" value='create'>Upload your document </button>
+            </form>
+        </div>
+    </div>
+</div><hr><br>
+{% endblock content %}

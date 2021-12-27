@@ -9,39 +9,47 @@
     {% block content %}
     <div class="container">
         <div class="row">
-            
+
             <h2 class='text-center'>Work Tree </h2>
             <hr>
             <h6  class='text-center'>Welcome "{{user.username}}" </h6>
-           
-            <a class="text-center" href="{% url 'customerprofile' %} " ><button type="submit" class="btn btn-success">All Orders and PO list</button></a><hr>
-          
+
+            <a class="text-center" href="{% url 'customerprofile' %} " ><button type="submit" class="btn btn-danger">All Orders and PO list</button></a>
+            <a class="text-center" href="{% url 'shutdown' %} " ><button type="submit" class="btn btn-danger" style="float:right;">Factory Shutdown maintenance plan</button></a>
+
+
+
             <div class="col-md-4   " >
 
                 <ul>
-                    <li><a href="{% url 'daily_notes' %}" class=" page-link   "  style='text-decoration:none;'><button type="submit" class="btn btn-success">Go to daily notes</button></a></li>
-                    <li><a href="{% url 'monthtasks' %}" class=" page-link   "  style='text-decoration:none;'><button type="submit" class="btn btn-success">Go to current month Tasks</button></a></li>
+                    <li><a href="{% url 'code_upload' %} " class="page-link"   ><button type="submit" class="btn btn-warning"   >Store Code List</button></a></li>
+                    <li> <a href="{% url 'maintenance:lists' %}" class="page-link"><button type="submit" class="btn btn-warning"   > All Check List</button></a></li>
+                    <li> <a href="{% url 'job_order' %}" class="page-link"  ><button type="submit" class="btn btn-success">Job orders View</button></a></li>
+                    <li><a href="{% url 'daily_notes' %}" class=" page-link   "  style='text-decoration:none;'><button type="submit" class="btn btn-success"> To_Do list</button></a></li>
+                    <li><a href="{% url 'monthtasks' %}" class=" page-link   "  style='text-decoration:none;'><button type="submit" class="btn btn-success">a ccomplished month tasks</button></a></li>
                     <li> <a href="{% url 'orders' %}" class="page-link"  style='text-decoration:none;'><button type="submit" class="btn btn-success">Go to Orders</button></a></li>
                     <li><a href="{% url 'po' %}" class="page-link"  style='text-decoration:none;'><button type="submit" class="btn btn-success">Go to PO</button></a></li>
                     <li> <a href="{% url 'offer' %}" class="page-link"  style='text-decoration:none;'><button type="submit" class="btn btn-success">Go to Offers</button></a></li>
                     <li><a href="{% url 'monthly_report' %}" class="page-link"><button type="submit" class="btn btn-success">Go to Monthly Reports</button></a></li>
-                    <li> <a href="#" class="page-link"  style='text-decoration:none;'><button type="submit" class="btn btn-success">Work orders View</button></a></li>
+
+
+
               </ul>
-               
-               
-            </div> 
+
+
+            </div>
 
             <div class="col-md-8  fit ">
-               <img src="{% static 'img/5.jpg' %}" style="height: 400px;width:750px;"    alt="">
-    
+               <img src="{% static 'img/vinyl-pvc-banners (1).jpg' %}" style="height: 400px;width:900px;"    alt="">
+
             </div><hr>
 
 
-      
-      
+
+
         </div>
     </div>
-      
+
     {% endblock content %}
 </body>
 {% include "footer" %}

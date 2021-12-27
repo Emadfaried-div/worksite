@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+
+
+
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <h2 class='text-center'>Utility Check List </h2><hr>
+      <h4><a href="{% url 'maintenance:utilitychecklist_upload' %}" class = "btn btn-danger btn-sm"> upload your document</a></h4>
+      <div class="col-md-6">
+
+          <table class="table">
+
+                <tr class='text-center'>
+
+                    <th style="background-color: #96D4D4;border: 1px solid black;"> Title</th>
+                    <th style="background-color: #96D4D4;border: 1px solid black;">Document</th>
+
+                </tr>
+
+            </thead>
+            <tbody>
+                    {% for p in utilitylist %}
+                    <tr class='text-center'>
+
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{p.title1}}</td>
+
+                      <td style="background-color: #96D4D4;border: 1px solid black;" ><a href="{{p.utilitycheck_document.url}}" class="btn btn-primary btn-sm" target="_blank">open the document</a></td>
+
+
+                  </tr>
+                    {% endfor%}
+
+
+
+
+
+            </tbody>
+        </table>
+
+      </div>
+      <div class="col-md-3">
+                                <form class="d-flex" action="{% url 'maintenance:utilitydoc_srch' %}"  method="GET" >
+                                    <input class="form-control mr-sm-2" type="text" placeholder="Search for document here..."  name="keyword"  required >
+                                    <button class="btn btn-danger" type="submit">Document_Search</button>
+
+                            </form>
+                            </div>
+                            <div class="col-md-3">
+                                 <h6 class="text">search results for  <span class="text-info">"{{request.GET.keyword}}"</span></h6>
+                                <table class="table">
+
+                <tr class='text-center'>
+
+                    <th style="background-color: #96D4D4;border: 1px solid black;"> Title</th>
+                    <th style="background-color: #96D4D4;border: 1px solid black;">Document</th>
+
+                </tr>
+
+            </thead>
+            <tbody>
+                    {% for c in utilitysearchlist %}
+                    <tr class='text-center'>
+
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{c.title1}}</td>
+
+                      <td style="background-color: #96D4D4;border: 1px solid black;" ><a href="{{c.utilitycheck_document.url}}" class="btn btn-primary btn-sm" target="_blank">open the document</a></td>
+
+
+                  </tr>
+                    {% endfor%}
+
+
+
+
+
+            </tbody>
+        </table>
+                            </div>
+    </div>
+</div>
+{% endblock content %}

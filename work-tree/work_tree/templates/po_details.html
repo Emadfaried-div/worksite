@@ -6,45 +6,47 @@
 {% block content %}
 <div class="container">
     <div class="row">
-      <h2 class='text-center'>The po details</h2><h6 style='color:blue;'>View count({{one_po.view_count}})</h6><hr>
+      <h2 class='text-center'>The po details</h2><hr>
       <div class="col-md-12">
           {{one_order.view_count}}
-          <table class="table">
-            <thead>
-                <tr class='text-center'>
-                   
-                    <th> Title</th>
-                    <th>Description</th>
-                    <th>Market </th>
-                    <th>count-of-offers </th>
-                    <th>Vendor</th> 
-                    <th>image</th>
-                   
-                </tr>                                                       
-                
+          <table class="table text-center" >
+            <thead >
+                <tr >
+
+                    <th style="background-color: #96D4D4;border: 1px solid black;"> Title</th>
+                    <th style="background-color: #96D4D4;border: 1px solid black;">Description</th>
+                    <th style="background-color: #96D4D4;border: 1px solid black;">Market </th>
+                    <th style="background-color: #96D4D4;border: 1px solid black;">count-of-offers </th>
+                    <th style="background-color: #96D4D4;border: 1px solid black;">Vendor</th>
+                    <th style="background-color: #96D4D4;border: 1px solid black;">document</th>
+                    <th style="background-color: #96D4D4;border: 1px solid black;">image</th>
+
+                </tr>
+
             </thead>
             <tbody>
-                    
-                    <tr class='text-center'>
-                      
-                      <td >{{one_po.title}}</td>
-                      <td >{{one_po.description}}</td>
-                      <td >{{one_po.market}}</td>
-                      <td >{{one_po.numbers_of_offers}}</td>
-                      <td >{{one_po.vendor}}</td>
-                      
-                      <td><img src="{{ one_po.image.url}}" style="height: 75px;" alt=""  ></td>
-                      
+
+
+                    <tr >
+
+                      <td style="background-color: #96D4D4;border: 1px solid black;">{{one_po.title}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;">{{one_po.description|safe }}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;">{{one_po.market}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;">{{one_po.numbers_of_offers}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;">{{one_po.vendor}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;">{{one_po.document}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;"><img src="{{ one_po.image.url}}" style="height: 75px;" alt=""  ></td>
+
                   </tr>
-                    
-                    
-                 
-                    
-                   
-                    
+
+
+
+
+
+
             </tbody>
         </table>
-      
+
       </div>
     </div>
 </div>

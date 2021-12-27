@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+
+
+
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <h2 class='text-center'>Check List </h2><hr>
+      <h4><a href="{% url 'maintenance:checklist_upload' %}" class = "btn btn-danger btn-sm"> upload new document</a></h4>
+      <div class="col-md-6">
+
+          <table class="table">
+            <thead>
+                <tr class='text-center'>
+
+                    <th style="background-color: #96D4D4;border: 1px solid black;"> Title</th>
+                    <th style="background-color: #96D4D4;border: 1px solid black;">Document</th>
+
+                </tr>
+
+            </thead>
+            <tbody>
+                    {% for list in lists %}
+                    <tr class='text-center'>
+
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{list.title}}</td>
+
+                      <td style="background-color: #96D4D4;border: 1px solid black;"><a href="{{list.check_document.url}}" class="btn btn-primary btn-sm" target="_blank">open the document</a></td>
+
+
+                  </tr>
+                    {% endfor%}
+
+
+
+
+
+            </tbody>
+        </table>
+
+      </div>
+      <div class="col-md-3">
+                                <form class="d-flex" action="{% url 'maintenance:doc_srch' %}"  method="GET" >
+                                    <input class="form-control mr-sm-2" type="text" placeholder="Search for document here..."  name="keyword"  required >
+                                    <button class="btn btn-danger" type="submit">Document_Search</button>
+
+                            </form>
+                            </div>
+                            <div class="col-md-3">
+                                 <h6 class="text">search results for  <span class="text-info">"{{request.GET.keyword}}"</span></h6>
+                                <table class="table">
+            <thead>
+                <tr class='text-center'>
+
+                    <th style="background-color: #96D4D4;border: 1px solid black;"> Title</th>
+                    <th style="background-color: #96D4D4;border: 1px solid black;">Document</th>
+
+                </tr>
+
+            </thead>
+            <tbody>
+                    {% for c in searchlist %}
+                    <tr class='text-center'>
+
+                      <td style="background-color: #96D4D4;border: 1px solid black;">{{c.title}}</td>
+
+                      <td style="background-color: #96D4D4;border: 1px solid black;"><a href="{{c.check_document.url}}" class="btn btn-primary btn-sm" target="_blank">open the document</a></td>
+
+
+                  </tr>
+                    {% endfor%}
+
+
+
+
+
+            </tbody>
+        </table>
+                            </div>
+    </div>
+</div>
+{% endblock content %}

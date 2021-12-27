@@ -8,31 +8,42 @@
 <body>
     {% block content %}
     <div class="container">
+<div class="col-md-4">
+                                <form class="d-flex" action="{% url 'po_search' %}"  method="GET" >
+                                    <input class="form-control mr-sm-2" type="text" placeholder="Search for your Po here..."  name="keyword"  required >
+                                    <button class="btn btn-danger" type="submit">Po_Search</button>
+
+                            </form>
+                            </div>
         <div class="row">
+
             <h2 class='text-center'>PO list</h2><hr>
-            <img src="{% static '2.jpg' %}" alt="" class="">
+            <a href="{% url 'po_create' %}"  class=" text-center"  style='text-decoration:none;'><button type="submit" class="btn btn-lg btn-primary" value='create ' style='float:right'>Create PO</button></a>
+            <img src="" alt="" class="">
+
             {% if perms.workapp.can_view_the_order %}
             {% for p in po %}
             <div class="col-md-3">
-                
+
             <a href="{% url 'onepo' p.slug %}"  class="page-link"><h4  class="dark-grey-text  " style= "color:red;">:&nbsp{{p.title}}</h4></a>
-             
-           <a href="{% url 'onepo' p.slug %}" class="page-link  "   ><img src="{{p.image.url}}" alt="" width="200"  style="height: 250px;object-fit:contain; "></a> 
+
+           <a href="{% url 'onepo' p.slug %}" class="page-link  "   ><img src="{{p.image.url}}" alt="" width="200"  style="height: 250px;object-fit:contain; "></a>
+           <h6>store_code:&nbsp{{p.store_code}}</h6>
            <h6>The Vendor:&nbsp{{p.vendor}}</h6>
             <h6>Market:&nbsp{{p.market}}</h6>
             <h6>Offer_Id:&nbsp{{p.offer.id}}</h6>
             <h6>count_of_offers:&nbsp{{p.numbers_of_offers}}</h6>
-            
-      
+
+
            </div>
-            
-            
+
+
             {% endfor %}
             {% endif %}
-      
+
         </div>
     </div>
-      
+
     {% endblock content %}
 </body>
 </html>

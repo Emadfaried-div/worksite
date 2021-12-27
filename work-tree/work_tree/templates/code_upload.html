@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block content %}
+<div class="container">
+
+    <div class="row">
+<div class="col-md-4">
+                                <form class="d-flex" action="{% url 'code_search' %}"  method="GET"  >
+                                    <input class="form-control mr-sm-2" type="text" placeholder="Search for your code here..."  name="keyword"  required >
+                                    <button class="btn btn-danger" type="submit" >Code_Search</button>
+
+                            </form><hr>
+                            </div>
+        <div class = "col-md-12">
+            <table class="table">
+            <thead>
+                <tr class = "text-center">
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">ID</th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;"> short_item_no</th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">item_code</th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">description1 </th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">description2 </th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">Search_text</th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">Sp_Branch</th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">location</th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">g_l_cat</th>
+
+                </tr>
+
+            </thead>
+            <tbody>
+                            {% for item in items %}
+                    <tr class = "text-center">
+                        <td style="background-color: #96D4D4;border: 1px solid black;" >{{forloop.counter}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.short_item_no}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.item_code }}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.description1}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.description2}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.Search_text}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.Sp_Branch}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.location}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.g_l_cat}}</td>
+
+
+
+                  </tr>
+
+                    {% endfor%}
+
+
+
+
+            </tbody>
+        </table>
+
+        </div>
+    </div>
+</div><hr><br>
+{% endblock content %}

@@ -4,10 +4,9 @@ from . import views
 
 
 
-
 urlpatterns = [
-    
-    
+
+
     path("", views.HomeView.as_view(), name= "home"),
     #path('orders/',views.orders,name='orders'),
     path("orders/",views.AllOrderstView.as_view(), name="orders"),
@@ -30,8 +29,8 @@ urlpatterns = [
     path("daily_notes/",views.DailyNotesView.as_view(), name="daily_notes"),
     #path('offer',views.offer, name='offer'),
     path("offer/",views.AllOfferstView.as_view(), name="offer"),
-   # path('oneoffer/<int:id>',views.oneoffer,name='oneoffer'),
-   path("oneoffer/<slug:slug>", views.OfferDetailView.as_view(), name= "oneoffer"),
+    # path('oneoffer/<int:id>',views.oneoffer,name='oneoffer'),
+    path("oneoffer/<slug:slug>", views.OfferDetailView.as_view(), name= "oneoffer"),
     path('monthtasks',views.list_view,name='monthtasks'),
     path("search/",views.SearchView.as_view(),name="search"),
     path('delete/<int:id>',views.delete_view,name='delete'),
@@ -43,6 +42,21 @@ urlpatterns = [
     path("logout/",views.CustomerLogoutView.as_view(), name="customerlogout"),
     path("send/",views.send,name="send"),
     path('pdfmonthcreate/',views.month_task_pdf_view,name='pdfmonthcreate'),
-    
-    
+    path('offer_create/',views.TheOfferCreateView.as_view(),name='offer_create'),
+    path('order_create/',views.TheOrderCreateView.as_view(),name='order_create'),
+    path('dailynotes_text/',views.dailynotes_text, name= 'dailynotes_text'),
+    path('monthtasks_csv/',views.monthtasks_csv, name='monthtasks_csv'),
+    path('code_upload/',views.simple_upload, name='code_upload'),
+    path("code_search/",views.CodeSearchView.as_view(), name="code_search"),
+    path("offer_search/",views.TheOffersearchSView.as_view(), name="offer_search"),
+    path("job_order/",views.Jop_OrderView.as_view(),name= "job_order"),
+    path("one_jop/<slug:slug>",views.jobOrderDetailView.as_view(), name= "one_jop"),
+    path("po_search/",views.ThePoSearchSView.as_view(), name="po_search"),
+    path("order_search/",views.TheOrdersearchSView.as_view(), name="order_search"),
+    path('job_order_create/',views.Jop_OrderForm, name='job_order_create'),
+    path('po_create/',views.ThePoForm, name='po_create'),
+    path("job_order_search/",views.Jop_OrderrsearchSView.as_view(), name="job_order_search"),
+    path('shutdown',views.shutdown_plan,name='shutdown'),
+
+
 ]

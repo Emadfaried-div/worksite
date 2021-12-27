@@ -1,0 +1,82 @@
+
+
+
+
+
+
+
+{% extends "base.html" %}
+
+{% load static %}
+{% load i18n %}
+
+{% block titel %} search {% endblock %}
+
+
+
+
+{% block content %}
+<div class="container">
+
+
+
+
+<section class="text-center mb-4">
+    <hr class="">
+    <div class="container">
+        <div class="raw">
+            <div class="col-md-12">
+    <h3 class="text">search results for  <span class="text-info">"{{request.GET.keyword}}"</span></h3>
+            </div>
+        </div>
+    </div>
+    <hr class="">
+
+
+  </section>
+  <div class = "col-md-12">
+            <table class="table">
+            <thead>
+                <tr class = "text-center">
+                    <th style="background-color: #96D4D4;border: 1px solid black;">ID</th>
+                    <th style="background-color: #96D4D4;border: 1px solid black;"> short_item_no</th>
+                    <th style="background-color: #96D4D4;border: 1px solid black;">item_code</th>
+                    <th style="background-color: #96D4D4;border: 1px solid black;">description1 </th>
+                    <th style="background-color: #96D4D4;border: 1px solid black;">description2 </th>
+                    <th style="background-color: #96D4D4;border: 1px solid black;">Item Location </th>
+
+
+
+                </tr>
+
+            </thead>
+            <tbody>
+                            {% for code in codes %}
+                    <tr class = "text-center">
+                        <td style="background-color: #96D4D4;border: 1px solid black;" >{{forloop.counter}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{ code.short_item_no}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{ code.item_code}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{ code.description1|truncatechars:30}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{ code.description2}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{ code.location}}</td>
+
+
+
+
+                  </tr>
+
+                    {% endfor%}
+
+
+
+
+            </tbody>
+        </table>
+
+        </div>
+  <!--Section: Products v.3-->
+
+  <!--Pagination-->
+
+
+  {% endblock content %}

@@ -8,27 +8,35 @@
 <body>
     {% block content %}
     <div class="container">
+        <div class="col-md-4">
+                                <form class="d-flex" action="{% url 'offer_search' %}"  method="GET" >
+                                    <input class="form-control mr-sm-2" type="text" placeholder="Search for your Po here..."  name="keyword"  required >
+                                    <button class="btn btn-danger" type="submit">Offer_Search</button>
+
+                            </form>
+                            </div>
         <div class="row">
             <h2 class='text-center'>Offers list</h2>
-            {% if perms.workapp.can_view_the_order %}   
+             <a href="{% url 'offer_create' %}"  class=" text-center"  style='text-decoration:none;'><button type="submit" class="btn btn-lg btn-primary" value='create ' style='float:right'>Create a new Offer </button></a>
+
       {% for p in offer %}
       <div class="col-md-4">
-          
+
       <a href="{% url 'oneoffer' p.slug %}"  class="page-link"><h4  class="dark-grey-text  " style= "color:red;">:&nbsp{{p.title}}</h4></a>
        <a href="{% url 'oneoffer' p.slug %}" class="page-link" ><h5>offer.id=&nbsp;{{p.id}}</h5></a>
-     
-     <a href="{% url 'oneoffer' p.slug %}" class="page-link  "   ><img src="{{p.image.url}}" alt="" width="200"  style="height: 250px;object-fit:contain; "></a> 
+
+     <a href="{% url 'oneoffer' p.slug %}" class="page-link  "   ><img src="{{p.image.url}}" alt="" width="200"  style="height: 250px;object-fit:contain; "></a>
      <h6>Market type:&nbsp{{p.market}}</h6>
      <h6 class="">created_at:&nbsp{{p.created_at}}</h6>
      <h6>vendor:&nbsp{{p.vendor}}</h6>
      </div>
-      
-      
+
+
       {% endfor %}
-      {% endif %}
+
         </div>
     </div>
-      
+
     {% endblock content %}
 </body>
 </html>
