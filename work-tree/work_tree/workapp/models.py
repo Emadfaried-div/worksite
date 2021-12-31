@@ -27,6 +27,12 @@ SECTION_CHOICES=(
     ('UTILITIES','utilities'),
 )
 
+PO_CHOICES=(
+    ('DELIVERED','delivered'),
+    ('On_Way','on_way'),
+
+)
+
 Area_CHOICES=(
     ('BM3','BM3'),
     ('BM4','BM4'),
@@ -64,6 +70,8 @@ VENDOR_CHOICES=(
     ("Ousuka-Techno","Ousuka-Techno"),
     ("Eltartosiah","Eltartosiah"),
     ("Bielomatic","Bielomatic"),
+    ("Lubricant_Engineers","Lubricant_Engineers"),
+    ("Omega","Omega"),
 )
 
 
@@ -76,16 +84,16 @@ class Admin(models.Model):
         return self.user.username
 
 class StoreCode(models.Model):
-    short_item_no = models.CharField(max_length=200)
-    item_code = models.CharField(max_length=200)
-    description1= models.CharField(max_length=200)
+    short_item_no = models.CharField(max_length=200,blank=True,null=True)
+    item_code = models.CharField(max_length=200,blank=True,null=True)
+    description1= models.CharField(max_length=200,blank=True,null=True)
     description2= models.CharField(max_length=200,blank=True,null=True)
-    Search_text = models.CharField(max_length=200)
-    Sp_Branch = models.CharField(max_length=200)
+    Search_text = models.CharField(max_length=200,blank=True,null=True)
+    Sp_Branch = models.CharField(max_length=200,blank=True,null=True)
     location = models.CharField(max_length=200,blank=True,null=True)
     g_l_cat = models.CharField(max_length=200,blank=True,null=True)
     def __str__(self):
-        return self.description1
+        return str(self.description1)
 
 
 class TheOffer(models.Model):
@@ -94,7 +102,6 @@ class TheOffer(models.Model):
     slug = models.SlugField(unique = False)
     section=models.CharField(max_length=100,choices=SECTION_CHOICES,default='mechanical',blank=True,null=True)
     market= models.CharField(max_length=200,choices=MARKET_CHOICES,default='Local', blank=True,null=True)
-    area = models.CharField(max_length=100,choices=Area_CHOICES,default='Bp360AMP',blank=True,null=True)
     vendor = models.CharField(max_length=200,choices=VENDOR_CHOICES,default='?',blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add =True,blank=True,null=True)
     responseibilty = models.CharField(max_length=200)
@@ -130,11 +137,10 @@ class TheOffer(models.Model):
 class ThePo(models.Model):
     user= models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
     offer=models.ForeignKey(TheOffer, on_delete=models.CASCADE,blank=True, null=True)
-    store_code = models.ForeignKey(StoreCode,on_delete=models.CASCADE,blank=True, null=True)
+    store_code = models.CharField(max_length=200,blank=True, null=True)
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=False)
     dept  = models.CharField(max_length=200,blank=True, null=True)
-    area = models.CharField(max_length=100,choices=Area_CHOICES,default='Bp360AMP',blank=True,null=True)
     section=models.CharField(max_length=100,choices=SECTION_CHOICES,default='mechanical',blank=True,null=True)
     market= models.CharField(max_length=200,choices=MARKET_CHOICES,default='Local', blank=True,null=True)
     vendor = models.CharField(max_length=200,choices=VENDOR_CHOICES,default='?',blank=True, null=True)
@@ -146,6 +152,8 @@ class ThePo(models.Model):
     quantity = models.PositiveIntegerField(default=0,blank=True, null=True)
     samples = models.CharField(max_length = 200 , blank=True, null=True)
     numbers_of_offers = models.PositiveIntegerField(default=1,blank=True, null=True)
+    po_price= models.PositiveIntegerField(default=0,blank=True, null=True)
+    po_status =models.CharField(max_length=200,choices=PO_CHOICES,default='on_way',blank=True, null=True)
     view_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
@@ -218,12 +226,11 @@ class TheOrder(models.Model):
 
     user= models.OneToOneField(User,on_delete=models.CASCADE,blank=True,null=True)
     notes=models.ForeignKey(DailyNotes,on_delete=models.CASCADE,blank=True, null=True)
-    store_code = models.ForeignKey(StoreCode,on_delete=models.CASCADE,blank=True, null=True)
+    store_code = models.CharField(max_length=200,blank=True, null=True)
     offer=models.ForeignKey(TheOffer, on_delete=models.CASCADE,blank=True, null=True)
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique = True)
     dept  = models.CharField(max_length=200,blank=True, null=True)
-    area = models.CharField(max_length=100,choices=Area_CHOICES,default='Bp360AMP',blank=True,null=True)
     section=models.CharField(max_length=100,choices=SECTION_CHOICES,default='mechanical',blank=True,null=True)
     market= models.CharField(max_length=200,choices=MARKET_CHOICES,default='Local', blank=True,null=True)
     vendor = models.CharField(max_length=200,choices=VENDOR_CHOICES,default='?',blank=True, null=True)
@@ -235,9 +242,13 @@ class TheOrder(models.Model):
     quantity = models.PositiveIntegerField(default=0,blank=True, null=True)
     samples = models.CharField(max_length = 200 , blank=True, null=True)
     numbers_of_offers = models.PositiveIntegerField(default=1,blank=True, null=True)
+    order_price= models.DecimalField(max_digits = 8, decimal_places = 2)
+    order_status =models.CharField(max_length=200,choices=PO_CHOICES,default='on_way',blank=True, null=True)
     view_count = models.PositiveIntegerField(default=0)
     def __str__(self):
         return self.title
+
+
 
     def get_absolute_url(self):
         return reverse("oneorder", kwargs={
@@ -332,4 +343,29 @@ class Jop_Order(models.Model):
         else:
             return '(Sin imagen)'
     image_img.short_description = 'Thumb'
+
+
+
+class KapasFollowUp(models.Model):
+    capa_request_number = models.CharField(max_length=200, null=True, blank=True)
+    capa_request_date = models.CharField(max_length=200, null=True, blank=True)
+    source_reference_no = models.CharField(max_length=200, null=True, blank=True)
+    finding_source_date = models.CharField(max_length=200, null=True, blank=True)
+    finding_no = models.CharField(max_length=200, null=True, blank=True)
+    finding_description = models.TextField(max_length=2000, null=True, blank=True)
+    finding_category = models.CharField(max_length=20, null=True, blank=True)
+    hosting_department = models.CharField(max_length=200, null=True, blank=True)
+    capa = models.TextField(null=True, blank=True)
+    due_date = models.CharField(max_length=200, null=True, blank=True)
+    capa_s_responsible_department = models.CharField(max_length=200, null=True, blank=True)
+    department_extra_comments = models.TextField( null=True, blank=True)
+    compliance_extra_comments = models.CharField(max_length=200, null=True, blank=True)
+    final_status = models.CharField(max_length=50, null=True, blank=True)
+    source  = models.CharField(max_length=50, null=True, blank=True)
+    justification_for_modification = models.CharField(max_length=200, null=True, blank=True)
+    department_extra_comments = models.CharField(max_length=200,blank=True,null=True)
+
+    def __str__(self):
+        return self.capa_request_number
+
 

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import *
-from . models import StoreCode,Jop_Order
+from . models import StoreCode,Jop_Order, KapasFollowUp
 from django.utils.safestring import mark_safe
 import threading
 from modeltranslation.admin import TranslationAdmin
@@ -108,6 +108,16 @@ class StoreCodeAdmin(ImportExportActionModelAdmin):
     list_display =['short_item_no', 'item_code', 'description1', 'description2', 'Search_text', 'Sp_Branch', 'location', 'g_l_cat']
     search_fields = ['short_item_no','item_code','description1','location']
 admin.site.register(StoreCode,StoreCodeAdmin)
+
+
+class KapasFollowUpAdmin(ImportExportActionModelAdmin):
+    list_display =['capa_request_number', 'capa_request_date', 'source_reference_no', 'finding_source_date', 'finding_no', 'finding_description',
+                   'finding_category', 'hosting_department', 'capa', 'due_date', 'capa_s_responsible_department', 'department_extra_comments', 'compliance_extra_comments', 'final_status',
+                   'source','justification_for_modification','department_extra_comments'
+                   ]
+    search_fields = ['capa_request_number','capa_request_date','capa','department_extra_comments']
+admin.site.register(KapasFollowUp,KapasFollowUpAdmin)
+
 
 @admin.register(MonthMenets)
 class MonthMenetsAdmin(ImportExportActionModelAdmin):

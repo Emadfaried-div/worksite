@@ -57,6 +57,6 @@ urlpatterns = [
     path('po_create/',views.ThePoForm, name='po_create'),
     path("job_order_search/",views.Jop_OrderrsearchSView.as_view(), name="job_order_search"),
     path('shutdown',views.shutdown_plan,name='shutdown'),
-
+    path('kapa_upload/',views.kapas_upload, name='kapa_upload'),
 
 ]

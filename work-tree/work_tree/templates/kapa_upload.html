@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block content %}
+<div class="container">
+
+    <div class="row ">
+
+        <div class = "col-md-12">
+            <table class="table">
+            <thead>
+                <tr class = "text-center">
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">ID</th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;"> capa_request_number</th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">capa_request_date</th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">source_reference_no </th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">finding_source_date </th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">finding_no</th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">finding_description</th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">finding_category</th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">hosting_department</th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">capa</th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">due_date</th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">capa_s_responsible_department</th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">department_extra_comments</th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">compliance_extra_comments</th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">final_status</th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">source</th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">justification_for_modification</th>
+                    <th  style="background-color: #96D4D4;border: 1px solid black;">department_extra_comments</th>
+
+                </tr>
+
+            </thead>
+            <tbody>
+                            {% for item in items %}
+                    <tr class = "text-center">
+                        <td style="background-color: #96D4D4;border: 1px solid black;" >{{forloop.counter}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.capa_request_number}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.capa_request_date }}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.source_reference_no}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.finding_source_date}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.finding_no}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.finding_description}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.finding_category}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.hosting_department}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.capa}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.due_date}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.capa_s_responsible_department}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.department_extra_comments}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.compliance_extra_comments}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.final_status}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.source}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.justification_for_modification}}</td>
+                      <td style="background-color: #96D4D4;border: 1px solid black;" >{{item.department_extra_comments}}</td>
+                    
+
+
+                  </tr>
+
+                    {% endfor%}
+
+
+
+
+            </tbody>
+        </table>
+
+        </div>
+    </div>
+</div><hr><br>
+{% endblock content %}

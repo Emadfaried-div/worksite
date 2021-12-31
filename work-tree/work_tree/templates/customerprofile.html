@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% load i18n %}
+{% load humanize %}
+
 {% block title %}My Profile{% endblock %}
 
 {% block content %}
-<div class="container" style="background-color:#F0E68C" >
-    <div class="row">
+<div class="container"  >
+    <div class="row wow fadeIn" style="background-color:#F0E68C" >
         <div class="col-md-4"><h3>My Informations</h3> <hr>
             <p><span style="font-size:larger;color:brown">Name: </span>{{ customer.full_name}}</p>
             <p><span style="font-size:larger;color:brown">Username: </span>{{customer.user.username }}</p>
@@ -15,70 +17,100 @@
         </div>
         <div class="col-md-8">
             <h3>Previous Orders</h3><hr>
+
+
+
             <table class="table">
                 <thead>
-                    <tr>
-                        <th>SN.</th>
-                        <th>title.</th>
-                        <th>date.</th>
-                        <th>user</th>
-                        
+                    <tr class="text-center">
+                        <th style="background-color: #96D4D4;border: 1px solid black;">SN.</th>
+                        <th style="background-color: #96D4D4;border: 1px solid black;">title.</th>
+                        <th style="background-color: #96D4D4;border: 1px solid black;">Store_Code.</th>
+                        <th style="background-color: #96D4D4;border: 1px solid black;">date.</th>
+                        <th style="background-color: #96D4D4;border: 1px solid black;">user</th>
+                        <th style="background-color: #96D4D4;border: 1px solid black;">Status</th>
+                        <th style="background-color: #96D4D4;border: 1px solid black;">Price</th>
+
+
+
                     </tr>
                 </thead>
                 <tbody>
-                    
+
                         {% for order in orders %}
-                       
-                       
-                        <tr>
-                            <td>{{forloop.counter}}</td>
-                            <td>{{order.title}}</td>
-                            <td>{{order.date}} ago</td>
-                            <td>{{order.user}}</td>
-                           
+
+
+                        <tr class="text-center ">
+                            <td style="background-color: #96D4D4;border: 1px solid black;"> {{forloop.counter}}</td>
+                            <td style="background-color: #96D4D4;border: 1px solid black;"> {{order.title}}<br><a href="{% url 'oneorder' order.slug %}" style="color:red;text-decoration:none;">press for more details</a></td>
+                            <td style="background-color: #96D4D4;border: 1px solid black;"> {{order.store_code}}</td>
+                            <td style="background-color: #96D4D4;border: 1px solid black;"> {{order.date}} ago</td>
+                            <td style="background-color: #96D4D4;border: 1px solid black;"> {{order.user}}</a></td>
+                            <td style="background-color: #96D4D4;border: 1px solid black;"> {{order.order_status}}</td>
+                            <td style="background-color: #96D4D4;border: 1px solid black;"> {{order.order_price| intcomma}}LE</td>
+
+
+
+
                         </tr>
                         {% endfor %}
-                       
+                        <tr>
+                            <th colspan="6" style="background-color: #96D4D4;border: 1px solid black;"><h5>Total Cost</h5></th>
+                            <td style="background-color: #96D4D4;border: 1px solid black;"><h5 style="color:red;">({{total_price| intcomma}})LE</h></td>
+                        </tr>
+
+
                 </tbody>
             </table>
 
         </div>
-        <div class="col-md-4"><h3></h3> <hr>
-            
-        </div>
+
+        <div class="col-md-4"></div>
         <div class="col-md-8">
-            <h3>Previous PO</h3><hr>
+            <h3>Previous PO_s</h3><hr>
             <table class="table">
                 <thead>
-                    <tr>
-                        <th>SN.</th>
-                        
-                        <th>title.</th>
-                        <th>date.</th>
-                        <th>user</th>
-                        
-                        
+                    <tr class="text-center" style="text-decoration:none">
+                        <th style="background-color: #96D4D4;border: 1px solid black;">SN.</th>
+                        <th style="background-color: #96D4D4;border: 1px solid black;">title</th>
+                        <th style="background-color: #96D4D4;border: 1px solid black;">Store_code.</th>
+                        <th style="background-color: #96D4D4;border: 1px solid black;">date.</th>
+                        <th style="background-color: #96D4D4;border: 1px solid black;">user</th>
+                        <th style="background-color: #96D4D4;border: 1px solid black;">Status</th>
+                        <th style="background-color: #96D4D4;border: 1px solid black;">Price</th>
+
                     </tr>
                 </thead>
                 <tbody>
-                    
-                        {% for order in pos %}
-                       
-                       
-                        <tr>
-                            <td>{{forloop.counter}}</td>
-                       
-                            <td>{{order.title}}</td>
-                            <td>{{order.date}} ago</td>
-                            <td>{{order.user}}</td>
-                           
+
+                        {% for po in pos %}
+
+
+                        <tr class="text-center">
+                            <td style="background-color: #96D4D4;border: 1px solid black;">{{forloop.counter}}</td>
+                            <td style="background-color: #96D4D4;border: 1px solid black;">{{po.title}}<br><a href="{% url 'onepo' po.slug %}" style="color:red;text-decoration:none;">press for more details</a></td>
+                            <td style="background-color: #96D4D4;border: 1px solid black;">{{po.store_code}}</td>
+                            <td style="background-color: #96D4D4;border: 1px solid black;">{{po.date}} ago</td>
+                            <td style="background-color: #96D4D4;border: 1px solid black;">{{po.user}}</td>
+                            <td style="background-color: #96D4D4;border: 1px solid black;">{{po.po_status}}</td>
+                            <td style="background-color: #96D4D4;border: 1px solid black;">{{po.po_price| intcomma}}LE</td>
+
+
                         </tr>
                         {% endfor %}
-                       
+                        <tr>
+                            <th colspan="6" style="background-color: #96D4D4;border: 1px solid black;"><h5>Total Cost</h5></th>
+                            <td style="background-color: #96D4D4;border: 1px solid black;"><h5 style="color:red;">({{all_prices| intcomma}})LE</h></td>
+                        </tr>
+
                 </tbody>
             </table>
+
         </div>
-        
+
+
+
+
     </div>
 </div>
 

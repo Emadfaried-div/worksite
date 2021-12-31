@@ -13,7 +13,7 @@ from xhtml2pdf import pisa
 from django.contrib.staticfiles import finders
 from django.template.loader import get_template
 from . models import *
-from . models import StoreCode
+from . models import StoreCode, KapasFollowUp
 from multiprocessing import context
 from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
@@ -46,7 +46,7 @@ import os
 from io import BytesIO
 from django.http import FileResponse
 import csv
-from .resources import SotreCodeResources
+from .resources import KapasFollowUpResources, SotreCodeResources
 from django.contrib import messages
 
 from tablib import Dataset
@@ -377,9 +377,17 @@ class OfferDetailView(LoginRequiredMixin, TemplateView):
     # return render (request,'orders_po.html',context)
 class AllOrderstView(LoginRequiredMixin,TemplateView):
     template_name= "orders_po.html"
+
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
-        context["order"]= TheOrder.objects.all().order_by("id")
+        order= TheOrder.objects.all().order_by("id")
+        items = TheOrder.objects.all()
+        total_price =sum(items.values_list('order_price',flat=True))
+
+        context={
+            "order":order,
+            "total_price":total_price,
+            }
         return context
 
 #def one_order(request,id):
@@ -607,12 +615,19 @@ class CustomerProfileView(TemplateView):
 
         orders=TheOrder.objects.all()
         pos = ThePo.objects.all()
+        items = TheOrder.objects.all()
+        total_price =sum(items.values_list('order_price',flat=True))
+        prices =ThePo.objects.all()
+        all_prices = sum(prices.values_list('po_price',flat=True))
         context={
             "orders":orders,
             "pos":pos,
+            "total_price":total_price,
+            "all_prices":all_prices,
             }
         context["customer"]=customer
         return context
+
 
 
 
@@ -796,3 +811,27 @@ class Jop_OrderrsearchSView(TemplateView):
 def shutdown_plan(request):
     
     return render(request,"shutdown_maintenance.html")    
+
+
+def kapas_upload(request):
+    if request.method == 'POST':
+        storecode_resource = KapasFollowUpResources()
+        dataset = Dataset
+
+        new_code = request.FILES['kapa follow up']
+        if not new_code.name.endswith('xlsx'):
+            message.info(request,'wrong format')
+            return render(request,'kapa_upload.html')
+
+        imported_data = dataset.load(new_kapa.read(),format='xlsx')
+        for data in imported_data:
+
+        	value = KapasFollowUp(
+        	    data[4],
+        	)
+        	value.save()
+    items =  KapasFollowUp.objects.all()
+    context = {
+        'items': items
+        }
+    return render(request,'kapa_upload.html',context)
