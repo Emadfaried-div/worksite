@@ -29,7 +29,7 @@ urlpatterns += i18n_patterns (
     path('',include('workapp.urls')),
     path('maintenance/',include('maintenance.urls', namespace="maintenance")),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-   
+    path('mycalendar/',include('mycalendar.urls', namespace="mycalendar")),
     
 )
 

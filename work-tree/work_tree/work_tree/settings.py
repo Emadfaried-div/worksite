@@ -43,21 +43,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'workapp',
-    
+    'mycalendar',
     'maintenance',
+    
     'xhtml2pdf',
     'import_export',
-    
-    
+    'widget_tweaks',
+    'rest_framework',
     'mptt',
     'ckeditor',
     'ckeditor_uploader',
     'django.contrib.humanize',
-    
-    
     'crispy_forms',
     "bootstrap4",
-    
     "templated_docs",
     
     

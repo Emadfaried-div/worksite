@@ -21,6 +21,8 @@ django-import-export==2.6.1
 django-js-asset==1.2.2
 django-modeltranslation==0.17.1
 django-mptt==0.12.0
+django-widget-tweaks==1.4.9
+djangorestframework==3.13.1
 et-xmlfile==1.1.0
 future==0.18.2
 html5lib==1.1
