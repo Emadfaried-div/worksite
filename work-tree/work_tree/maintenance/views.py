@@ -1,10 +1,12 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, request
 from maintenance.forms import CheckListForm, UtilityCheckListForm
-from maintenance.models import CheckList, UtilityCheckList
+from maintenance.models import CheckList, MaintenancePlan, UtilityCheckList
 from multiprocessing import context
 from django.views.generic import ListView, TemplateView , DetailView , View, CreateView, FormView
 from django.db.models.query_utils import Q
+from tablib import Dataset
+from maintenance.resources import MaintenancePlanResources
 # Create your views here.
 
 
@@ -79,3 +81,30 @@ class utilityCheckListsearchSView(TemplateView):
 
         context["utilitysearchlist"]=utilitysearchlist
         return context
+
+
+
+def event_upload(request):
+    if request.method == 'POST':
+        storecode_resource = MaintenancePlanResources()
+        dataset = Dataset
+
+        new_code = request.FILES['my maintenance plan excel sheet for uploading']
+        if not new_code.name.endswith('xlsx'):
+            message.info(request,'wrong format')
+            return render(request,'maintenance/maintenance_plan_excelsheet.html')
+
+        imported_data = dataset.load(new_event.read(),format='xlsx')
+        for data in imported_data:
+
+        	value = MaintenancePlan(
+        	    data[4],
+        	)
+        	value.save()
+    items =  MaintenancePlan.objects.all()
+    context = {
+        'items': items
+        
+        
+        }
+    return render(request,'maintenance/maintenance_plan_excelsheet.html',context)

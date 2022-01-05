@@ -112,6 +112,8 @@ class TheOffer(models.Model):
     quantity = models.PositiveIntegerField(default=0,blank=True, null=True)
     totalprice = models.PositiveIntegerField(default=0)
     view_count = models.PositiveIntegerField(default=0)
+    visible_to = models.ManyToManyField(User, related_name="visible_to")
+    editable_r = models.ManyToManyField(User, related_name="editable_r")
 
 
     def __str__(self):
@@ -151,6 +153,8 @@ class ThePo(models.Model):
     document = models.FileField(upload_to='Order-doc/%Y/%m/%D/',blank=True, null=True)
     quantity = models.PositiveIntegerField(default=0,blank=True, null=True)
     samples = models.CharField(max_length = 200 , blank=True, null=True)
+    show_to = models.ManyToManyField(User, related_name="show_to")
+    edit_by = models.ManyToManyField(User, related_name="edit_by")
     numbers_of_offers = models.PositiveIntegerField(default=1,blank=True, null=True)
     po_price= models.PositiveIntegerField(default=0,blank=True, null=True)
     po_status =models.CharField(max_length=200,choices=PO_CHOICES,default='on_way',blank=True, null=True)
@@ -210,6 +214,8 @@ class DailyNotes(models.Model):
     status=models.CharField(max_length=100,choices=STATUS_CHOICES,default='not-yet',blank=True,null=True)
     delete_obj=models.CharField(max_length=100,default='delete?',blank=True,null=True)
     update_obj=models.CharField(max_length=200,default='Edit?',blank=True,null=True)
+    see_it_to = models.ManyToManyField(User, related_name="see_it_to")
+    edit_it_by = models.ManyToManyField(User, related_name="edit_it_by")
 
     def __str__(self):
         return self.description
@@ -245,6 +251,8 @@ class TheOrder(models.Model):
     order_price= models.DecimalField(max_digits = 8, decimal_places = 2)
     order_status =models.CharField(max_length=200,choices=PO_CHOICES,default='on_way',blank=True, null=True)
     view_count = models.PositiveIntegerField(default=0)
+    showing_to = models.ManyToManyField(User, related_name="showing_to")
+    editing_by = models.ManyToManyField(User, related_name="editing_by")
     def __str__(self):
         return self.title
 
@@ -367,5 +375,6 @@ class KapasFollowUp(models.Model):
 
     def __str__(self):
         return self.capa_request_number
+
 
 

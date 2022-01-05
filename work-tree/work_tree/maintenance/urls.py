@@ -12,4 +12,5 @@ urlpatterns = [
     path('lists',views.FolderCheckList, name="lists"),
     path("doc_srch/",views.CheckListsearchSView.as_view(), name="doc_srch"),
     path("utilitydoc_srch/",views.utilityCheckListsearchSView.as_view(), name="utilitydoc_srch"),
+    path("eventupload/",views.event_upload, name="eventupload"),
 ]
