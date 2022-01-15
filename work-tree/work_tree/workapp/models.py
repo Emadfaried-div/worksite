@@ -76,7 +76,7 @@ VENDOR_CHOICES=(
 
 
 class Admin(models.Model):
-    user=models.OneToOneField(User,on_delete=models.CASCADE)
+    user=models.OneToOneField(User,on_delete=models.CASCADE,unique=True)
     full_name=models.CharField(max_length=50)
     image=models.ImageField(upload_to="admins",blank=True,null=True)
     mobile=models.CharField(max_length=20)
@@ -279,7 +279,7 @@ class MonthMenets(models.Model):
         return self.task
 
 class Customer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE,)
     full_name = models.CharField(max_length = 200)
     address = models.CharField(max_length = 200 , blank=True, null=True)
     joined_on = models.DateTimeField(auto_now_add=True)

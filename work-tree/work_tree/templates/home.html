@@ -12,10 +12,10 @@
 
             <h2 class='text-center' style="color:#800080;">Work Tree </h2>
             <hr>
-            <h6  class='text-center' >Welcome "{{user.username}}" </h6>
+            <h6  class='text-center' style="color:#800080;">Welcome "{{user.username}}" </h6>
 
-            
-           
+
+
 
 
 
@@ -94,8 +94,9 @@
 </div>
             </div>
             <div class="col-md-3  fit ">
-               
-               <a href="{% url 'kapa_upload' %} "   ><button type="submit" class="btn btn-danger" style="width:105%;"  >KAPAS Follow UP</button></a><hr>
+               <a href="{% url 'mycalendar:calendarhome' %} "   ><button type="submit" class="btn btn-danger" style="width:105%;"  >EVENT's CALENDER</button></a><hr>
+               <a href="{% url 'maintenance:eventupload' %} "   ><button type="submit" class="btn btn-danger" style="width:105%;"  >Maintenance Plan sheet</button></a><hr>
+               <a href="{% url 'kapa_upload' %} "   ><button type="submit" class="btn btn-danger" style="width:105%;"  >CAPA's Follow UP</button></a><hr>
                <a class="text-center" href="{% url 'shutdown' %} "  class="text-center"><button type="submit" class="btn btn-danger" style="width:105%;">Factory Shutdown maintenance plan</button></a><hr>
                <a  href="{% url 'customerprofile' %} " class="text-center"><button type="submit" class="btn btn-danger"  style="width:105%;">All Orders and PO list</button></a><hr>
             </div><hr>
@@ -107,26 +108,7 @@
     </div>
 
     {% endblock content %}
-    
 </body>
-{% block extrajs %}
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<script src="{% static 'fullcalendar/lib/main.js"></script>
-<script src="{% static 'js/libro/reservas.js"></script>
-<script src="/javascripts/main.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded',function(){
-            var calendarUI= document.getElementById('calendar');
-            var calendar = fullcalendar.calendar(calendarUI,{
-            });
-            clalender.render();
-        });
-
-
-    </script>
-    {% endblock extrajs %}
 {% include "footer" %}
 </html>
  </div>
